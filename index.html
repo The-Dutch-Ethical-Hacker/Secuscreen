@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium anti-spy screenprotectors voor iPhone. Beveilig je scherm en geniet van 180° privacybescherming!">
+  <meta name="keywords" content="anti-spy screenprotector iPhone, privacy screen iPhone, iPhone lensprotector, starters-kit">
+  <meta name="author" content="SecuScreen.com">
+  <title>SecuScreen - Premium Privacy</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React en ReactDOM via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- Babel voor JSX -->
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .fade-in { animation: fadeIn 1s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .banner-image { transition: opacity 0.5s ease-in-out; }
+    .hover-scale { transition: transform 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+    .cookie-banner { transition: transform 0.3s ease; }
+    .carousel-container { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .carousel-container::-webkit-scrollbar { display: none; }
+    .carousel-item { scroll-snap-align: start; }
+    .pulse { animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <div id="root"></div>
+
+  <!-- Chatbase Script -->
+  <script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="xf9VCPjj8UEx0sjhL_BSk";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+  </script>
+
+  <script type="text/babel">
+    function App() {
+      const [cartCount, setCartCount] = React.useState(0);
+      const [showPrivacy, setShowPrivacy] = React.useState(false);
+      const [showCookieBanner, setShowCookieBanner] = React.useState(true);
+      const [language, setLanguage] = React.useState('en');
+      const [timeLeft, setTimeLeft] = React.useState(2 * 60 * 60); // 2 uur in seconden
+
+      // Automatische slider (4 seconden)
+      React.useEffect(() => {
+        const interval = setInterval(() => {
+          setShowPrivacy(prev => !prev);
+        }, 4000);
+        return () => clearInterval(interval);
+      }, []);
+
+      // Countdown-timer
+      React.useEffect(() => {
+        const timer = setInterval(() => {
+          setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
+        return () => clearInterval(timer);
+      }, []);
+
+      // Cookiebanner accepteren
+      const acceptCookies = () => {
+        setShowCookieBanner(false);
+      };
+
+      // Tijd formatteren
+      const formatTime = (seconds) => {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      };
+
+      // Product aan winkelwagen toevoegen
+      const addToCart = () => {
+        setCartCount(cartCount + 1);
+        alert(translations[language].cartAdded);
+      };
+
+      // Abonnement kiezen
+      const subscribe = () => {
+        alert(translations[language].subscriptionSelected);
+      };
+
+      // Toggle voor privacy-screen
+      const togglePrivacy = () => {
+        setShowPrivacy(!showPrivacy);
+      };
+
+      // Taal wisselen
+      const changeLanguage = (lang) => {
+        setLanguage(lang);
+      };
+
+      // Vertaalteksten
+      const translations = {
+        en: {
+          title: 'Protect Your Privacy!',
+          subtitle: 'Secure your screen with unrivaled 180° privacy!',
+          productTitle: 'Anti-Spy Screenprotector Starter Kit',
+          productDescription: 'Premium anti-spy screenprotectors and lens protector for iPhone 11 to 16 (including Pro/Max/Plus). Protect your privacy with scratch-resistant glass and easy installation.',
+          productBenefits: [
+            '180° privacy protection: only you see your screen.',
+            'Reduces blue light: less eye strain.',
+            'Scratch-resistant: durable tempered glass.',
+            'High touchscreen sensitivity: smooth operation.'
+          ],
+          productUrgency: 'Offer expires in:',
+          cartAdded: 'Starter kit added to cart!',
+          paymentOptions: 'AfterPay available.',
+          subscriptionTitle: 'Choose Convenience with Our Subscription!',
+          subscriptionText: 'With our subscription, you receive a new starter kit every 6 months, hassle-free. Enjoy 10% savings, always free shipping, and worry-free privacy protection. You can easily cancel or pause through your account or our customer service. Perfect for those who want to regularly replace their screenprotector and maintain top-tier protection!',
+          subscriptionPrice: '€17.99 / 6 months',
+          subscriptionButton: 'Start Subscription',
+          subscriptionSelected: 'Subscription selected! You’ll receive a new starter kit every 6 months.',
+          testimonialsTitle: 'What Our Customers Say',
+          testimonials: [
+            { name: 'A. K.', quote: 'Super happy! No one can peek at my iPhone screen on the bus anymore. Installation was a breeze.', orderDate: '10-05-2025' },
+            { name: 'Sanne B.', quote: 'My eyes feel so much less tired since using this screenprotector. The lens protector is a nice bonus!', orderDate: '12-05-2025' },
+            { name: 'M. El-H.', quote: 'Great quality for a good price. Fast delivery and my screen stays scratch-free!', orderDate: '15-05-2025' },
+            { name: 'Ravi S.', quote: 'Perfect for work, my data is safe in public spaces now. Highly recommend!', orderDate: '17-05-2025' },
+            { name: 'D. Y.', quote: 'The blue light reduction really works, I notice the difference after long phone sessions.', orderDate: '20-05-2025' },
+            { name: 'Esra A.', quote: 'Nice packaging and easy instructions. My iPhone feels much safer now!', orderDate: '22-05-2025' }
+          ],
+          newsletterTitle: 'Stay in the Loop!',
+          newsletterSubtitle: 'Sign up for our newsletter to get exclusive discounts, product updates, and a free privacy guide!',
+          newsletterButton: 'Sign Up Now!',
+          whyUs: 'Why Choose Us?',
+          uspPrivacy: 'Ultimate Privacy',
+          uspPrivacyText: '180° privacy protection keeps your screen hidden.',
+          uspCompatibility: 'For All iPhones',
+          uspCompatibilityText: 'Compatible with iPhone 11 to 16, including Pro/Max/Plus.',
+          uspInstallation: 'Easy Installation',
+          uspInstallationText: 'Includes kit and video for bubble-free placement.',
+          faqTitle: 'Frequently Asked Questions',
+          faqDelivery: 'How fast is the delivery?',
+          faqDeliveryText: 'We offer fast delivery and always free shipping.',
+          faqCompatibility: 'Which iPhones are compatible?',
+          faqCompatibilityText: 'Our starter kit fits iPhone 11 to 16, including Pro/Max/Plus.',
+          faqReturn: 'What is the return policy?',
+          faqReturnText: '30-day return period. Contact us at info@SecuScreen.com.',
+          contactTitle: 'Contact Us',
+          contactText: 'Questions? Email us at <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> or WhatsApp: +31 6 1234 5678. Fast delivery and always free shipping!',
+          footer: '© 2025 SecuScreen.com. All rights reserved. 30-day return period and free shipping on all orders.'
+        },       
+        nl: {
+          title: 'Bescherm je privacy!',
+          subtitle: 'Beveilig je scherm met ongeëvenaarde 180° privacy!',
+          productTitle: 'Anti-Spy Screenprotector Starters-kit',
+          productDescription: 'Premium anti-spy screenprotectors en lensprotector voor iPhone 11 t/m 16 (inclusief Pro/Max/Plus). Bescherm je privacy met krasbestendig glas en eenvoudige installatie.',
+          productBenefits: [
+            '180° privacybescherming: alleen jij ziet je scherm.',
+            'Reduceert blauw licht: minder vermoeide ogen.',
+            'Krasbestendig: duurzaam gehard glas.',
+            'Hoge touchscreen-gevoeligheid: vloeiende bediening.'
+          ],
+          productUrgency: 'Aanbieding verloopt over:',
+          cartAdded: 'Starters-kit toegevoegd aan winkelwagen!',
+          paymentOptions: 'Achteraf betalen mogelijk.',
+          subscriptionTitle: 'Kies voor gemak met ons abonnement!',
+          subscriptionText: 'Met ons abonnement ontvang je elke 6 maanden een nieuwe starters-kit, zonder gedoe. Profiteer van 10% korting, altijd gratis verzending en zorgeloze privacybescherming. Je kunt eenvoudig opzeggen of pauzeren via je account of onze klantenservice. Ideaal voor wie regelmatig zijn screenprotector wil vervangen en altijd de beste bescherming wil!',
+          subscriptionPrice: '€17,99 / 6 maanden',
+          subscriptionButton: 'Abonnement starten',
+          subscriptionSelected: 'Abonnement geselecteerd! Je ontvangt elke 6 maanden een nieuwe starters-kit.',
+          testimonialsTitle: 'Wat onze klanten zeggen',
+          testimonials: [
+            { name: 'A. K.', quote: 'Super tevreden! Niemand kan meer meekijken op mijn iPhone in de bus. De installatie was een eitje.', orderDate: '10-05-2025' },
+            { name: 'Sanne B.', quote: 'Mijn ogen zijn veel minder moe sinds ik deze screenprotector gebruik. De lensprotector is een leuke bonus!', orderDate: '12-05-2025' },
+            { name: 'M. El-H.', quote: 'Topkwaliteit voor een goede prijs. Snelle levering en mijn scherm blijft krasvrij!', orderDate: '15-05-2025' },
+            { name: 'Ravi S.', quote: 'Perfect voor mijn werk, mijn gegevens zijn nu veilig in openbare ruimtes. Aanrader!', orderDate: '17-05-2025' },
+            { name: 'D. Y.', quote: 'De blauwlichtreductie werkt echt, ik merk het verschil na lange dagen op mijn telefoon.', orderDate: '20-05-2025' },
+            { name: 'Esra A.', quote: 'Mooie verpakking en makkelijke handleiding. Mijn iPhone voelt nu veel veiliger!', orderDate: '22-05-2025' }
+          ],
+          newsletterTitle: 'Blijf op de hoogte!',
+          newsletterSubtitle: 'Schrijf je in voor onze nieuwsbrief en ontvang exclusieve kortingen, productupdates en een gratis privacygids!',
+          newsletterButton: 'Schrijf je nu in!',
+          whyUs: 'Waarom kiezen voor ons?',
+          uspPrivacy: 'Ultieme privacy',
+          uspPrivacyText: '180° privacybescherming houdt je scherm verborgen.',
+          uspCompatibility: 'Voor alle iPhones',
+          uspCompatibilityText: 'Compatibel met iPhone 11 t/m 16, inclusief Pro/Max/Plus.',
+          uspInstallation: 'Makkelijke installatie',
+          uspInstallationText: 'Inclusief kit en video voor een bubbelvrije plaatsing.',
+          faqTitle: 'Veelgestelde vragen',
+          faqDelivery: 'Hoe snel is de levering?',
+          faqDeliveryText: 'Wij bieden snelle levering en altijd gratis verzending.',
+          faqCompatibility: 'Voor welke iPhones is dit geschikt?',
+          faqCompatibilityText: 'Onze starters-kit past op iPhone 11 t/m 16, inclusief Pro/Max/Plus.',
+          faqReturn: 'Wat is het retourbeleid?',
+          faqReturnText: '30 dagen bedenktijd. Neem contact op via info@SecuScreen.com.',
+          contactTitle: 'Neem contact op',
+          contactText: 'Vragen? Stuur een e-mail naar <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> of WhatsApp: +31 6 1234 5678. Snelle levering en altijd gratis verzending!',
+          footer: '© 2025 SecuScreen.com. Alle rechten voorbehouden. 30 dagen bedenktijd en gratis verzending op alle bestellingen.'
+        },
+        fr: {
+          title: 'Protégez votre vie privée !',
+          subtitle: 'Sécurisez votre écran avec une confidentialité inégalée à 180° !',
+          productTitle: 'Kit de Démarrage de Protecteurs d’Écran Anti-Espion',
+          productDescription: 'Protecteurs d’écran anti-espion premium et protecteur d’objectif pour iPhone 11 à 16 (y compris Pro/Max/Plus). Protégez votre vie privée avec un verre résistant aux rayures et une installation facile.',
+          productBenefits: [
+            'Protection de confidentialité à 180° : seul vous voyez votre écran.',
+            'Réduit la lumière bleue : moins de fatigue oculaire.',
+            'Résistant aux rayures : verre trempé durable.',
+            'Haute sensibilité tactile : fonctionnement fluide.'
+          ],
+          productUrgency: 'L’offre expire dans :',
+          cartAdded: 'Kit de démarrage ajouté au panier !',
+          paymentOptions: 'Payer après réception possible.',
+          subscriptionTitle: 'Optez pour la commodité avec notre abonnement !',
+          subscriptionText: 'Avec notre abonnement, recevez un nouveau kit de démarrage tous les 6 mois, sans tracas. Profitez d’une réduction de 10 %, d’une livraison toujours gratuite et d’une protection de confidentialité sans souci. Vous pouvez annuler ou suspendre facilement via votre compte ou notre service client. Idéal pour ceux qui souhaitent remplacer régulièrement leur protecteur d’écran et maintenir une protection optimale !',
+          subscriptionPrice: '17,99 € / 6 mois',
+          subscriptionButton: 'Démarrer l’abonnement',
+          subscriptionSelected: 'Abonnement sélectionné ! Vous recevrez un nouveau kit de démarrage tous les 6 mois.',
+          testimonialsTitle: 'Ce que disent nos clients',
+          testimonials: [
+            { name: 'A. K.', quote: 'Super satisfait ! Personne ne peut plus regarder mon iPhone dans le bus. L’installation était un jeu d’enfant.', orderDate: '10-05-2025' },
+            { name: 'Sanne B.', quote: 'Mes yeux sont beaucoup moins fatigués depuis que j’utilise ce protecteur d’écran. Le protecteur d’objectif est un bonus sympa !', orderDate: '12-05-2025' },
+            { name: 'M. El-H.', quote: 'Excellente qualité pour un bon prix. Livraison rapide et mon écran reste sans rayures !', orderDate: '15-05-2025' },
+            { name: 'Ravi S.', quote: 'Parfait pour le travail, mes données sont maintenant sécurisées dans les espaces publics. Je recommande !', orderDate: '17-05-2025' },
+            { name: 'D. Y.', quote: 'La réduction de la lumière bleue fonctionne vraiment, je vois la différence après de longues sessions sur mon téléphone.', orderDate: '20-05-2025' },
+            { name: 'Esra A.', quote: 'Bel emballage et instructions faciles. Mon iPhone est maintenant beaucoup plus sécurisé !', orderDate: '22-05-2025' }
+          ],
+          newsletterTitle: 'Restez informé !',
+          newsletterSubtitle: 'Inscrivez-vous à notre newsletter pour recevoir des remises exclusives, des mises à jour de produits et un guide de confidentialité gratuit !',
+          newsletterButton: 'Inscrivez-vous maintenant !',
+          whyUs: 'Pourquoi nous choisir ?',
+          uspPrivacy: 'Confidentialité ultime',
+          uspPrivacyText: 'Protection de confidentialité à 180° garde votre écran caché.',
+          uspCompatibility: 'Pour tous les iPhones',
+          uspCompatibilityText: 'Compatible avec iPhone 11 à 16, y compris Pro/Max/Plus.',
+          uspInstallation: 'Installation facile',
+          uspInstallationText: 'Inclut un kit et une vidéo pour une pose sans bulles.',
+          faqTitle: 'Questions fréquentes',
+          faqDelivery: 'Quelle est la rapidité de livraison ?',
+          faqDeliveryText: 'Nous offrons une livraison rapide et toujours gratuite.',
+          faqCompatibility: 'Pour quels iPhones est-ce compatible ?',
+          faqCompatibilityText: 'Notre kit de démarrage convient aux iPhone 11 à 16, y compris Pro/Max/Plus.',
+          faqReturn: 'Quelle est la politique de retour ?',
+          faqReturnText: 'Période de retour de 30 jours. Contactez-nous à info@SecuScreen.com.',
+          contactTitle: 'Contactez-nous',
+          contactText: 'Questions? Email us at <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> or WhatsApp: +31 6 1234 5678. Fast delivery and always free shipping!',
+          footer: '© 2025 SecuScreen.com. Tous droits réservés. Période de retour de 30 jours et livraison gratuite sur toutes les commandes.'
+        },
+        es: {
+          title: '¡Protege tu privacidad!',
+          subtitle: '¡Asegura tu pantalla con una privacidad inigualable de 180°!',
+          productTitle: 'Kit de Inicio de Protectores de Pantalla Anti-Espías',
+          productDescription: 'Protectores de pantalla anti-espías premium y protector de lente para iPhone 11 a 16 (incluyendo Pro/Max/Plus). Protege tu privacidad con vidrio resistente a arañazos e instalación fácil.',
+          productBenefits: [
+            'Protección de privacidad de 180°: solo tú ves tu pantalla.',
+            'Reduce la luz azul: menos fatiga ocular.',
+            'Resistente a arañazos: vidrio templado duradero.',
+            'Alta sensibilidad táctil: funcionamiento suave.'
+          ],
+          productUrgency: 'La oferta expira en:',
+          cartAdded: '¡Kit de inicio añadido al carrito!',
+          paymentOptions: 'Pagar después disponible a través.',
+          subscriptionTitle: '¡Elige la comodidad con nuestra suscripción!',
+          subscriptionText: 'Con nuestra suscripción, recibirás un nuevo kit de inicio cada 6 meses, sin complicaciones. Disfruta de un 10% de ahorro, envío siempre gratuito y protección de privacidad sin preocupaciones. Puedes cancelar o pausar fácilmente a través de tu cuenta o nuestro servicio al cliente. ¡Perfecto para quienes desean reemplazar regularmente su protector de pantalla y mantener una protección de primer nivel!',
+          subscriptionPrice: '17,99 € / 6 meses',
+          subscriptionButton: 'Iniciar suscripción',
+          subscriptionSelected: '¡Suscripción seleccionada! Recibirás un nuevo kit de inicio cada 6 meses.',
+          testimonialsTitle: 'Lo que dicen nuestros clientes',
+          testimonials: [
+            { name: 'A. K.', quote: '¡Super contento! Nadie puede mirar mi iPhone en el autobús. La instalación fue muy fácil.', orderDate: '10-05-2025' },
+            { name: 'Sanne B.', quote: 'Mis ojos están mucho menos cansados desde que uso este protector de pantalla. ¡El protector de lente es un gran extra!', orderDate: '12-05-2025' },
+            { name: 'M. El-H.', quote: 'Gran calidad por un buen precio. Entrega rápida y mi pantalla sigue sin arañazos.', orderDate: '15-05-2025' },
+            { name: 'Ravi S.', quote: 'Perfecto para el trabajo, mis datos están seguros en espacios públicos. ¡Recomendado!', orderDate: '17-05-2025' },
+            { name: 'D. Y.', quote: 'La reducción de luz azul realmente funciona, noto la diferencia tras largas sesiones con mi teléfono.', orderDate: '20-05-2025' },
+            { name: 'Esra A.', quote: 'Bonito empaque e instrucciones fáciles. ¡Mi iPhone se siente mucho más seguro ahora!', orderDate: '22-05-2025' }
+          ],
+          newsletterTitle: '¡Mantente informado!',
+          newsletterSubtitle: 'Suscríbete a nuestro boletín para recibir descuentos exclusivos, actualizaciones de productos y una guía de privacidad gratis.',
+          newsletterButton: '¡Suscríbete ahora!',
+          whyUs: '¿Por qué elegirnos?',
+          uspPrivacy: 'Privacidad definitiva',
+          uspPrivacyText: 'Protección de privacidad de 180° mantiene tu pantalla oculta.',
+          uspCompatibility: 'Para todos los iPhones',
+          uspCompatibilityText: 'Compatible con iPhone 11 a 16, incluyendo Pro/Max/Plus.',
+          uspInstallation: 'Instalación fácil',
+          uspInstallationText: 'Incluye kit y video para una colocación sin burbujas.',
+          faqTitle: 'Preguntas frecuentes',
+          faqDelivery: '¿Qué tan rápida es la entrega?',
+          faqDeliveryText: 'Ofrecemos entrega rápida y siempre gratuita.',
+          faqCompatibility: '¿Para qué iPhones es compatible?',
+          faqCompatibilityText: 'Nuestro kit de inicio es compatible con iPhone 11 a 16, incluyendo Pro/Max/Plus.',
+          faqReturn: '¿Cuál es la política de devoluciones?',
+          faqReturnText: 'Período de devolución de 30 días. Contáctanos en info@SecuScreen.com.',
+          contactTitle: 'Contáctanos',
+          contactText: '¿Preguntas? Envía un correo a <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> o WhatsApp: +31 6 1234 5678. ¡Entrega rápida y siempre gratuita!',
+          footer: '© 2025 SecuScreen.com. Todos los derechos reservados. Período de devolución de 30 días y envío gratuito en todos los pedidos.'
+        },
+        de: {
+          title: 'Schützen Sie Ihre Privatsphäre!',
+          subtitle: 'Sichern Sie Ihren Bildschirm mit unübertroffener 180°-Privatsphäre!',
+          productTitle: 'Anti-Spionage-Displayschutz Starter-Kit',
+          productDescription: 'Premium Anti-Spionage-Displayschutzfolien und Linsenschutz für iPhone 11 bis 16 (einschließlich Pro/Max/Plus). Schützen Sie Ihre Privatsphäre mit kratzfestem Glas und einfacher Installation.',
+          productBenefits: [
+            '180°-Datenschutz: Nur Sie sehen Ihren Bildschirm.',
+            'Reduziert blaues Licht: Weniger Augenbelastung.',
+            'Kratzfest: Langlebiges gehärtetes Glas.',
+            'Hohe Touchscreen-Empfindlichkeit: Reibungslose Bedienung.'
+          ],
+          productUrgency: 'Angebot läuft ab in:',
+          cartAdded: 'Starter-Kit zum Warenkorb hinzugefügt!',
+          paymentOptions: 'Später bezahlen möglich.',
+          subscriptionTitle: 'Entscheiden Sie sich für Komfort mit unserem Abonnement!',
+          subscriptionText: 'Mit unserem Abonnement erhalten Sie alle 6 Monate ein neues Starter-Kit, ohne Aufwand. Profitieren Sie von 10% Ersparnis, immer kostenlosem Versand und sorgenfreiem Datenschutz. Sie können jederzeit einfach über Ihr Konto oder unseren Kundenservice kündigen oder pausieren. Ideal für diejenigen, die regelmäßig ihren Displayschutz ersetzen und stets erstklassigen Schutz genießen möchten!',
+          subscriptionPrice: '17,99 € / 6 Monate',
+          subscriptionButton: 'Abonnement starten',
+          subscriptionSelected: 'Abonnement ausgewählt! Sie erhalten alle 6 Monate ein neues Starter-Kit.',
+          testimonialsTitle: 'Was unsere Kunden sagen',
+          testimonials: [
+            { name: 'A. K.', quote: 'Super zufrieden! Niemand kann mehr auf mein iPhone im Bus schauen. Die Installation war kinderleicht.', orderDate: '10-05-2025' },
+            { name: 'Sanne B.', quote: 'Meine Augen sind viel weniger müde, seit ich diesen Displayschutz benutze. Der Linsenschutz ist ein tolles Extra!', orderDate: '12-05-2025' },
+            { name: 'M. El-H.', quote: 'Top-Qualität für einen guten Preis. Schnelle Lieferung und mein Bildschirm bleibt kratzfrei!', orderDate: '15-05-2025' },
+            { name: 'Ravi S.', quote: 'Perfekt für die Arbeit, meine Daten sind jetzt in öffentlichen Räumen sicher. Sehr empfehlenswert!', orderDate: '17-05-2025' },
+            { name: 'D. Y.', quote: 'Die Blaulichtreduktion funktioniert wirklich, ich merke den Unterschied nach langen Telefon-Sessions.', orderDate: '20-05-2025' },
+            { name: 'Esra A.', quote: 'Schöne Verpackung und einfache Anleitung. Mein iPhone fühlt sich jetzt viel sicherer an!', orderDate: '22-05-2025' }
+          ],
+          newsletterTitle: 'Bleiben Sie informiert!',
+          newsletterSubtitle: 'Melden Sie sich für unseren Newsletter an, um exklusive Rabatte, Produkt-Updates und einen kostenlosen Datenschutzleitfaden zu erhalten!',
+          newsletterButton: 'Jetzt anmelden!',
+          whyUs: 'Warum uns wählen?',
+          uspPrivacy: 'Ultimativer Datenschutz',
+          uspPrivacyText: '180°-Datenschutz hält Ihren Bildschirm verborgen.',
+          uspCompatibility: 'Für alle iPhones',
+          uspCompatibilityText: 'Kompatibel mit iPhone 11 bis 16, einschließlich Pro/Max/Plus.',
+          uspInstallation: 'Einfache Installation',
+          uspInstallationText: 'Inklusive Kit und Video für eine blasenfreie Anbringung.',
+          faqTitle: 'Häufig gestellte Fragen',
+          faqDelivery: 'Wie schnell ist die Lieferung?',
+          faqDeliveryText: 'Wir bieten schnelle Lieferung und immer kostenlosen Versand.',
+          faqCompatibility: 'Für welche iPhones ist es geeignet?',
+          faqCompatibilityText: 'Unser Starter-Kit passt auf iPhone 11 bis 16, einschließlich Pro/Max/Plus.',
+          faqReturn: 'Wie lautet die Rückgabepolitik?',
+          faqReturnText: '30-tägige Rückgabefrist. Kontaktieren Sie uns unter info@SecuScreen.com.',
+          contactTitle: 'Kontaktieren Sie uns',
+          contactText: 'Fragen? Senden Sie eine E-Mail an <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> oder WhatsApp: +31 6 1234 5678. Schnelle Lieferung und immer kostenloser Versand!',
+          footer: '© 2025 SecuScreen.com. Alle Rechte vorbehalten. 30-tägige Rückgabefrist und kostenloser Versand auf alle Bestellungen.'
+        }
+      };
+
+      return (
+        <div className="min-h-screen">
+          {/* Cookiebanner */}
+          {showCookieBanner && (
+            <div className="fixed bottom-0 left-0 right-0 bg-gray-800 p-4 z-30 cookie-banner shadow-lg">
+              <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                <p className="text-sm mb-2 md:mb-0">
+                  {language === 'nl' ? 'Wij gebruiken cookies om je ervaring te verbeteren. Door verder te gaan, ga je akkoord met ons cookiebeleid.' : 
+                   language === 'en' ? 'We use cookies to improve your experience. By continuing, you agree to our cookie policy.' :
+                   language === 'fr' ? 'Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre politique de cookies.' :
+                   language === 'es' ? 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra política de cookies.' :
+                   'Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Durch Fortfahren stimmen Sie unserer Cookie-Richtlinie zu.'}
+                </p>
+                <div className="space-x-4">
+                  <button onClick={acceptCookies} className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">
+                    {language === 'nl' ? 'Accepteren' : language === 'en' ? 'Accept' : language === 'fr' ? 'Accepter' : language === 'es' ? 'Aceptar' : 'Akzeptieren'}
+                  </button>
+                  <a href="/privacybeleid" className="text-blue-400 text-sm hover:underline">
+                    {language === 'nl' ? 'Instellingen' : language === 'en' ? 'Settings' : language === 'fr' ? 'Paramètres' : language === 'es' ? 'Configuración' : 'Einstellungen'}
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Header */}
+          <header className="bg-gray-800 p-4 sticky top-0 z-20 shadow-lg">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-blue-400">SecuScreen</h1>
+              <div className="flex items-center space-x-4 md:space-x-6">
+                <nav className="flex space-x-4">
+                  <a href="#home" className="hover:text-blue-400 transition">{language === 'nl' ? 'Home' : language === 'en' ? 'Home' : language === 'fr' ? 'Accueil' : language === 'es' ? 'Inicio' : 'Start'}</a>
+                  <a href="#product" className="hover:text-blue-400 transition">{language === 'nl' ? 'Product' : language === 'en' ? 'Product' : language === 'fr' ? 'Produit' : language === 'es' ? 'Producto' : 'Produkt'}</a>
+                  <a href="#testimonials" className="hover:text-blue-400 transition">{language === 'nl' ? 'Reviews' : language === 'en' ? 'Reviews' : language === 'fr' ? 'Avis' : language === 'es' ? 'Reseñas' : 'Bewertungen'}</a>
+                  <a href="#faq" className="hover:text-blue-400 transition">{language === 'nl' ? 'FAQ' : language === 'en' ? 'FAQ' : language === 'fr' ? 'FAQ' : language === 'es' ? 'Preguntas frecuentes' : 'FAQ'}</a>
+                  <a href="#contact" className="hover:text-blue-400 transition">{language === 'nl' ? 'Contact' : language === 'en' ? 'Contact' : language === 'fr' ? 'Contact' : language === 'es' ? 'Contacto' : 'Kontakt'}</a>
+                </nav>
+                <select
+                  value={language}
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  className="bg-gray-700 text-white border-none rounded-md p-1 text-sm"
+                >
+                  <option value="en">EN</option>
+                  <option value="nl">NL</option>
+                  <option value="fr">FR</option>
+                  <option value="es">ES</option>
+                  <option value="de">DE</option>
+                </select>
+                <span className="relative">
+                  🛒 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-sm">{cartCount}</span>
+                </span>
+              </div>
+            </div>
+          </header>
+
+          {/* Full-screen Banner */}
+          <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-b from-gray-800 to-gray-900">
+            <div className="container mx-auto px-4 text-center fade-in">
+              <h2 className="text-4xl md:text-6xl font-bold mb-4 text-blue-400">{translations[language].title}</h2>
+              <p className="text-lg md:text-2xl mb-6 max-w-2xl mx-auto">{translations[language].subtitle}</p>
+              <div className="relative w-full max-w-xs md:max-w-lg mx-auto mb-8">
+                <img
+                  src="/images/Logo.png"
+                  alt="SecuScreen Logo"
+                  className="w-full h-auto rounded-lg shadow-2xl banner-image hover-scale"
+                />
+              </div>
+              <a href="#product" className="inline-block bg-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition hover-scale">
+                {language === 'nl' ? 'Shop nu' : language === 'en' ? 'Shop now' : language === 'fr' ? 'Acheter maintenant' : language === 'es' ? 'Compra ahora' : 'Jetzt kaufen'}
+              </a>
+            </div>
+          </section>
+
+          {/* Product-sectie */}
+          <section id="product" className="py-16 bg-gray-800 fade-in">
+            <div className="container mx-auto px-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <img src="/images/product-bundle.png" alt="Anti-spy screenprotector starters-kit" className="w-full rounded-lg shadow-2xl hover-scale"/>
+                </div>
+                <div className="text-center md:text-left">
+                  <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400">{translations[language].productTitle}</h3>
+                  <p className="text-lg mb-4">{translations[language].productDescription}</p>
+                  <ul className="text-lg mb-4 space-y-2">
+                    {translations[language].productBenefits.map((benefit, index) => (
+                      <li key={index} className="flex items-center">
+                        <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                        </svg>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-lg mb-4">{language === 'nl' ? 'Inclusief:' : language === 'en' ? 'Includes:' : language === 'fr' ? 'Inclus :' : language === 'es' ? 'Incluye:' : 'Enthalten:'}</p>
+                  <ul className="text-lg mb-4 space-y-2">
+                    <li className="flex items-center">
+                      <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                      </svg>
+                      {language === 'nl' ? '3x Anti-spy screenprotectors' : language === 'en' ? '3x Anti-spy screenprotectors' : language === 'fr' ? '3x Protecteurs d’écran anti-espion' : language === 'es' ? '3x Protectores de pantalla anti-espías' : '3x Anti-Spionage-Displayschutz'}
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                      </svg>
+                      {language === 'nl' ? '1x Lensprotector' : language === 'en' ? '1x Lens protector' : language === 'fr' ? '1x Protecteur d’objectif' : language === 'es' ? '1x Protector de lente' : '1x Linsenschutz'}
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                      </svg>
+                      {language === 'nl' ? 'Installatiekit (doekje, applicator)' : language === 'en' ? 'Installation kit (cloth, applicator)' : language === 'fr' ? 'Kit d’installation (chiffon, applicateur)' : language === 'es' ? 'Kit de instalación (paño, aplicador)' : 'Installationskit (Tuch, Applikator)'}
+                    </li>
+                  </ul>
+                  <p className="text-xl font-bold mb-2">
+                    <span className="line-through text-gray-400">€39,99</span>
+                    <span className="text-yellow-400 ml-2">€19,99</span>
+                  </p>
+                  <p className="text-xl font-bold text-red-500 mb-4">{translations[language].productUrgency} {formatTime(timeLeft)}</p>
+                  <p className="text-sm text-gray-300 mb-4">{translations[language].paymentOptions}</p>
+                  <button onClick={addToCart} className="bg-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition pulse">
+                    {language === 'nl' ? 'Toevoegen aan winkelwagen' : language === 'en' ? 'Add to cart' : language === 'fr' ? 'Ajouter au panier' : language === 'es' ? 'Añadir al carrito' : 'Zum Warenkorb hinzufügen'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Testimonials-sectie */}
+          <section id="testimonials" className="py-16 bg-gray-900 fade-in">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-400">{translations[language].testimonialsTitle}</h2>
+              <div className="carousel-container flex space-x-4">
+                {translations[language].testimonials.map((testimonial, index) => (
+                  <div key={index} className="carousel-item flex-none w-80 p-6 bg-gray-800 rounded-lg shadow-lg hover-scale">
+                    <div className="flex mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-sm mb-4">"{testimonial.quote}"</p>
+                    <p className="text-sm font-semibold text-blue-400">{testimonial.name}</p>
+                    <p className="text-xs text-gray-400">{language === 'nl' ? 'Besteld op' : language === 'en' ? 'Ordered on' : language === 'fr' ? 'Commandé le' : language === 'es' ? 'Ordenado el' : 'Bestellt am'} {testimonial.orderDate}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Newsletter-sectie */}
+          <section id="newsletter" className="py-16 bg-gray-800 fade-in">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].newsletterTitle}</h2>
+              <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].newsletterSubtitle}</p>
+              <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+                <input
+                  type="email"
+                  placeholder={language === 'nl' ? 'Vul je e-mailadres in' : language === 'en' ? 'Enter your email address' : language === 'fr' ? 'Entrez votre adresse email' : language === 'es' ? 'Ingresa tu correo electrónico' : 'Geben Sie Ihre E-Mail-Adresse ein'}
+                  className="w-full md:w-64 p-3 rounded-full bg-gray-700 text-white border-none focus:outline-none"
+                />
+                <a
+                  href="https://forms.gle/example" // Vervang door je Google Forms/Mailchimp-link
+                  target="_blank"
+                  className="bg-yellow-400 text-gray-900 px-6 py-3 rounded-full font-semibold text-lg hover:bg-yellow-500 transition hover-scale"
+                >
+                  {translations[language].newsletterButton}
+                </a>
+              </div>
+            </div>
+          </section>
+
+          {/* Abonnementssectie */}
+          <section id="subscription" className="py-16 bg-gray-900 fade-in">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].subscriptionTitle}</h2>
+              <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].subscriptionText}</p>
+              <p className="text-xl font-bold text-yellow-400 mb-4">{translations[language].subscriptionPrice}</p>
+              <p className="text-sm text-gray-300 mb-4">{translations[language].paymentOptions}</p>
+              <a
+                href="https://stripe.com/subscription" // Vervang door je Stripe-link
+                target="_blank"
+                onClick={subscribe}
+                className="inline-block bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold text-lg hover:bg-yellow-500 transition hover-scale"
+              >
+                {translations[language].subscriptionButton}
+              </a>
+            </div>
+          </section>
+
+          {/* USP-sectie */}
+          <section className="py-16 bg-gray-900 fade-in">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-400">{translations[language].whyUs}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center p-6 bg-gray-800 rounded-lg shadow-lg hover-scale">
+                  <img src="/images/Icon-Privacy.png" alt="Privacy icoon" className="w-12 h-12 mx-auto mb-2"/>
+                  <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].uspPrivacy}</h3>
+                  <p>{translations[language].uspPrivacyText}</p>
+                </div>
+                <div className="text-center p-6 bg-gray-800 rounded-lg shadow-lg hover-scale">
+                  <img src="/images/Icon-Iphone.png" alt="Compatibiliteit icoon" className="w-12 h-12 mx-auto mb-2"/>
+                  <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].uspCompatibility}</h3>
+                  <p>{translations[language].uspCompatibilityText}</p>
+                </div>
+                <div className="text-center p-6 bg-gray-800 rounded-lg shadow-lg hover-scale">
+                  <img src="/images/Icon-Installation.png" alt="Installatie icoon" className="w-12 h-12 mx-auto mb-2"/>
+                  <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].uspInstallation}</h3>
+                  <p>{translations[language].uspInstallationText}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* FAQ-sectie */}
+          <section id="faq" className="py-16 bg-gray-800 fade-in">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-400">{translations[language].faqTitle}</h2>
+              <div className="space-y-6 max-w-2xl mx-auto">
+                <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-semibold mb-2">{translations[language].faqDelivery}</h3>
+                  <p>{translations[language].faqDeliveryText}</p>
+                </div>
+                <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-semibold mb-2">{translations[language].faqCompatibility}</h3>
+                  <p>{translations[language].faqCompatibilityText}</p>
+                </div>
+                <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-semibold mb-2">{translations[language].faqReturn}</h3>
+                  <p>{translations[language].faqReturnText}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Contact-sectie */}
+          <section id="contact" className="py-16 bg-gray-900 fade-in">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-blue-400">{translations[language].contactTitle}</h2>
+              <p className="text-lg mb-4" dangerouslySetInnerHTML={{ __html: translations[language].contactText }}></p>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="bg-gray-800 py-8">
+            <div className="container mx-auto px-4 text-center">
+              <p className="text-sm">{translations[language].footer}</p>
+              <p className="mt-2 space-x-4">
+                <a href="/privacybeleid" className="hover:text-blue-400 transition">{language === 'nl' ? 'Privacybeleid' : language === 'en' ? 'Privacy Policy' : language === 'fr' ? 'Politique de confidentialité' : language === 'es' ? 'Política de privacidad' : 'Datenschutzrichtlinie'}</a>
+                <a href="/voorwaarden" className="hover:text-blue-400 transition">{language === 'nl' ? 'Algemene voorwaarden' : language === 'en' ? 'Terms & Conditions' : language === 'fr' ? 'Conditions générales' : language === 'es' ? 'Términos y condiciones' : 'Allgemeine Geschäftsbedingungen'}</a>
+                <a href="https://instagram.com/privacyscreen" className="hover:text-blue-400 transition">Instagram</a>
+              </p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // Render de app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
