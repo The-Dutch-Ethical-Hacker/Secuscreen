@@ -161,7 +161,6 @@
       const saveCookieSettings = () => {
         setShowCookieBanner(false);
         setShowCookieSettings(false);
-        // Hier kun je de cookie-consent opslaan (bijv. in localStorage)
         localStorage.setItem('cookieConsent', JSON.stringify(cookieConsent));
         alert(language === 'nl' ? 'Cookie-instellingen opgeslagen!' : language === 'en' ? 'Cookie settings saved!' : language === 'fr' ? 'Paramètres des cookies enregistrés !' : language === 'es' ? '¡Configuración de cookies guardada!' : 'Cookie-Einstellungen gespeichert!');
       };
@@ -224,11 +223,16 @@
           productUrgency: 'Offer expires in:',
           cartAdded: 'Starter kit added to cart!',
           paymentOptions: 'AfterPay available.',
-          subscriptionTitle: 'Choose Convenience with Our Subscription!',
-          subscriptionText: 'With our subscription, you receive a new starter kit every 6 months, hassle-free. Enjoy 10% savings, always free shipping, and worry-free privacy protection. You can easily cancel or pause through your account or our customer service. Perfect for those who want to regularly replace their screenprotector and maintain top-tier protection!',
-          subscriptionPrice: '€17.99 / 6 months',
-          subscriptionButton: 'Start Subscription',
-          subscriptionSelected: 'Subscription selected! You’ll receive a new starter kit every 6 months.',
+          subscriptionTitle: 'Unlock Ultimate Convenience with Our Subscription!',
+          subscriptionText: 'Join our exclusive subscription and receive a brand-new Starter Kit every 6 months, delivered straight to your door. Enjoy a fantastic 10% discount, free shipping on every delivery, and hassle-free privacy protection. Pause or cancel anytime via your account or our friendly customer service. Perfect for staying ahead with top-tier screen protection!',
+          subscriptionPrice: 'Only €17.99 / 6 months',
+          subscriptionButton: 'Start Now & Save 10%',
+          subscriptionSelected: 'Subscription activated! You’ll receive a new Starter Kit every 6 months.',
+          singleProtectorTitle: 'Single Screenprotector Deal',
+          singleProtectorText: 'Grab a single premium anti-spy screenprotector at an unbeatable action price!',
+          singleProtectorOriginal: 'Regular Price: €14.95',
+          singleProtectorAction: 'Action Price: €9.99',
+          singleProtectorButton: 'Buy Now',
           testimonialsTitle: 'What Our Customers Say',
           testimonials: [
             { name: 'A. K.', quote: 'Super happy! No one can peek at my iPhone screen on the bus anymore. Installation was a breeze.', orderDate: '10-05-2025' },
@@ -283,11 +287,16 @@
           productUrgency: 'Aanbieding verloopt over:',
           cartAdded: 'Starters-kit toegevoegd aan winkelwagen!',
           paymentOptions: 'Achteraf betalen mogelijk.',
-          subscriptionTitle: 'Kies voor gemak met ons abonnement!',
-          subscriptionText: 'Met ons abonnement ontvang je elke 6 maanden een nieuwe starters-kit, zonder gedoe. Profiteer van 10% korting, altijd gratis verzending en zorgeloze privacybescherming. Je kunt eenvoudig opzeggen of pauzeren via je account of onze klantenservice. Ideaal voor wie regelmatig zijn screenprotector wil vervangen en altijd de beste bescherming wil!',
-          subscriptionPrice: '€17,99 / 6 maanden',
-          subscriptionButton: 'Abonnement starten',
-          subscriptionSelected: 'Abonnement geselecteerd! Je ontvangt elke 6 maanden een nieuwe starters-kit.',
+          subscriptionTitle: 'Ontgrendel ultiem gemak met ons abonnement!',
+          subscriptionText: 'Sluit je aan bij ons exclusieve abonnement en ontvang elke 6 maanden een gloednieuwe Starters-kit rechtstreeks bij jou thuis. Geniet van een fantastische 10% korting, gratis verzending bij elke levering en zorgeloze privacybescherming. Pauzeer of annuleer op elk moment via je account of onze vriendelijke klantenservice. Perfect om altijd voorop te blijven met topklasse schermbescherming!',
+          subscriptionPrice: 'Alleen €17,99 / 6 maanden',
+          subscriptionButton: 'Start nu & bespaar 10%',
+          subscriptionSelected: 'Abonnement geactiveerd! Je ontvangt elke 6 maanden een nieuwe Starters-kit.',
+          singleProtectorTitle: 'Enkele Screenprotector Deal',
+          singleProtectorText: 'Koop een enkele premium anti-spy screenprotector tegen een onklopbare actieprijs!',
+          singleProtectorOriginal: 'Normale prijs: €14,95',
+          singleProtectorAction: 'Actieprijs: €9,99',
+          singleProtectorButton: 'Koop nu',
           testimonialsTitle: 'Wat onze klanten zeggen',
           testimonials: [
             { name: 'A. K.', quote: 'Super tevreden! Niemand kan meer meekijken op mijn iPhone in de bus. De installatie was een eitje.', orderDate: '10-05-2025' },
@@ -342,11 +351,16 @@
           productUrgency: 'L’offre expire dans :',
           cartAdded: 'Kit de démarrage ajouté au panier !',
           paymentOptions: 'Payer après réception possible.',
-          subscriptionTitle: 'Optez pour la commodité avec notre abonnement !',
-          subscriptionText: 'Avec notre abonnement, recevez un nouveau kit de démarrage tous les 6 mois, sans tracas. Profitez d’une réduction de 10 %, d’une livraison toujours gratuite et d’une protection de confidentialité sans souci. Vous pouvez annuler ou suspendre facilement via votre compte ou notre service client. Idéal pour ceux qui souhaitent remplacer régulièrement leur protecteur d’écran et maintenir une protection optimale !',
-          subscriptionPrice: '17,99 € / 6 mois',
-          subscriptionButton: 'Démarrer l’abonnement',
-          subscriptionSelected: 'Abonnement sélectionné ! Vous recevrez un nouveau kit de démarrage tous les 6 mois.',
+          subscriptionTitle: 'Débloquez un confort ultime avec notre abonnement !',
+          subscriptionText: 'Rejoignez notre abonnement exclusif et recevez un nouveau Kit de Démarrage tous les 6 mois, directement chez vous. Profitez d’une réduction de 10 %, d’une livraison gratuite à chaque fois et d’une protection de confidentialité sans tracas. Pause ou annulation possible à tout moment via votre compte ou notre service client amical. Idéal pour rester en tête avec une protection d’écran de premier ordre !',
+          subscriptionPrice: 'Seulement 17,99 € / 6 mois',
+          subscriptionButton: 'Commencez maintenant & économisez 10%',
+          subscriptionSelected: 'Abonnement activé ! Vous recevrez un nouveau Kit de Démarrage tous les 6 mois.',
+          singleProtectorTitle: 'Offre pour un Protecteur d’Écran Unique',
+          singleProtectorText: 'Achetez un protecteur d’écran anti-espion premium à un prix d’action imbattable !',
+          singleProtectorOriginal: 'Prix régulier : 14,95 €',
+          singleProtectorAction: 'Prix d’action : 9,99 €',
+          singleProtectorButton: 'Acheter maintenant',
           testimonialsTitle: 'Ce que disent nos clients',
           testimonials: [
             { name: 'A. K.', quote: 'Super satisfait ! Personne ne peut plus regarder mon iPhone dans le bus. L’installation était un jeu d’enfant.', orderDate: '10-05-2025' },
@@ -401,11 +415,16 @@
           productUrgency: 'La oferta expira en:',
           cartAdded: '¡Kit de inicio añadido al carrito!',
           paymentOptions: 'Pagar después disponible a través.',
-          subscriptionTitle: '¡Elige la comodidad con nuestra suscripción!',
-          subscriptionText: 'Con nuestra suscripción, recibirás un nuevo kit de inicio cada 6 meses, sin complicaciones. Disfruta de un 10% de ahorro, envío siempre gratuito y protección de privacidad sin preocupaciones. Puedes cancelar o pausar fácilmente a través de tu cuenta o nuestro servicio al cliente. ¡Perfecto para quienes desean reemplazar regularmente su protector de pantalla y mantener una protección de primer nivel!',
-          subscriptionPrice: '17,99 € / 6 meses',
-          subscriptionButton: 'Iniciar suscripción',
-          subscriptionSelected: '¡Suscripción seleccionada! Recibirás un nuevo kit de inicio cada 6 meses.',
+          subscriptionTitle: '¡Desbloquea la máxima comodidad con nuestra suscripción!',
+          subscriptionText: 'Únete a nuestra suscripción exclusiva y recibe un nuevo Kit de Inicio cada 6 meses, entregado directamente en tu puerta. Disfruta de un increíble 10% de descuento, envío gratuito en cada entrega y protección de privacidad sin complicaciones. Pausa o cancela en cualquier momento a través de tu cuenta o nuestro amable servicio al cliente. ¡Perfecto para mantenerte a la vanguardia con la mejor protección de pantalla!',
+          subscriptionPrice: 'Solo 17,99 € / 6 meses',
+          subscriptionButton: 'Comienza ahora & ahorra 10%',
+          subscriptionSelected: '¡Suscripción activada! Recibirás un nuevo Kit de Inicio cada 6 meses.',
+          singleProtectorTitle: 'Oferta de Protector de Pantalla Individual',
+          singleProtectorText: '¡Consigue un protector de pantalla anti-espías premium a un precio de acción increíble!',
+          singleProtectorOriginal: 'Precio regular: 14,95 €',
+          singleProtectorAction: 'Precio de acción: 9,99 €',
+          singleProtectorButton: 'Compra ahora',
           testimonialsTitle: 'Lo que dicen nuestros clientes',
           testimonials: [
             { name: 'A. K.', quote: '¡Super contento! Nadie puede mirar mi iPhone en el autobús. La instalación fue muy fácil.', orderDate: '10-05-2025' },
@@ -460,11 +479,16 @@
           productUrgency: 'Angebot läuft ab in:',
           cartAdded: 'Starter-Kit zum Warenkorb hinzugefügt!',
           paymentOptions: 'Später bezahlen möglich.',
-          subscriptionTitle: 'Entscheiden Sie sich für Komfort mit unserem Abonnement!',
-          subscriptionText: 'Mit unserem Abonnement erhalten Sie alle 6 Monate ein neues Starter-Kit, ohne Aufwand. Profitieren Sie von 10% Ersparnis, immer kostenlosem Versand und sorgenfreiem Datenschutz. Sie können jederzeit einfach über Ihr Konto oder unseren Kundenservice kündigen oder pausieren. Ideal für diejenigen, die regelmäßig ihren Displayschutz ersetzen und stets erstklassigen Schutz genießen möchten!',
-          subscriptionPrice: '17,99 € / 6 Monate',
-          subscriptionButton: 'Abonnement starten',
-          subscriptionSelected: 'Abonnement ausgewählt! Sie erhalten alle 6 Monate ein neues Starter-Kit.',
+          subscriptionTitle: 'Entsperren Sie ultimativen Komfort mit unserem Abonnement!',
+          subscriptionText: 'Schließen Sie sich unserem exklusiven Abonnement an und erhalten Sie alle 6 Monate ein neues Starter-Kit direkt an Ihre Tür geliefert. Genießen Sie einen großartigen 10%-Rabatt, kostenlosen Versand bei jeder Lieferung und sorgenfreien Datenschutz. Pausieren oder kündigen Sie jederzeit über Ihr Konto oder unseren freundlichen Kundenservice. Perfekt, um stets mit erstklassigem Bildschutz vorn zu bleiben!',
+          subscriptionPrice: 'Nur 17,99 € / 6 Monate',
+          subscriptionButton: 'Jetzt starten & 10% sparen',
+          subscriptionSelected: 'Abonnement aktiviert! Sie erhalten alle 6 Monate ein neues Starter-Kit.',
+          singleProtectorTitle: 'Angebot für einen Einzelnen Displayschutz',
+          singleProtectorText: 'Kaufen Sie einen premium Anti-Spionage-Displayschutz zu einem unschlagbaren Aktionspreis!',
+          singleProtectorOriginal: 'Regulärer Preis: 14,95 €',
+          singleProtectorAction: 'Aktionspreis: 9,99 €',
+          singleProtectorButton: 'Jetzt kaufen',
           testimonialsTitle: 'Was unsere Kunden sagen',
           testimonials: [
             { name: 'A. K.', quote: 'Super zufrieden! Niemand kann mehr auf mein iPhone im Bus schauen. Die Installation war kinderleicht.', orderDate: '10-05-2025' },
@@ -771,10 +795,26 @@
                 href="https://stripe.com/subscription" // Vervang door je Stripe-link
                 target="_blank"
                 onClick={subscribe}
-                className="inline-block bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold text-lg hover:bg-yellow-500 transition hover-scale"
+                className="inline-block bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold text-lg hover:bg-yellow-500 transition hover-scale pulse"
               >
                 {translations[language].subscriptionButton}
               </a>
+            </div>
+          </section>
+
+          {/* Single Protector Deal Sectie */}
+          <section className="py-16 bg-gray-800 fade-in">
+            <div className="container mx-auto px-4 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].singleProtectorTitle}</h2>
+              <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].singleProtectorText}</p>
+              <p className="text-xl font-bold mb-2">
+                <span className="line-through text-gray-400">{translations[language].singleProtectorOriginal}</span>
+                <span className="text-yellow-400 ml-2">{translations[language].singleProtectorAction}</span>
+              </p>
+              <p className="text-sm text-gray-300 mb-4">{translations[language].paymentOptions}</p>
+              <button onClick={addToCart} className="bg-red-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-red-600 transition pulse">
+                {translations[language].singleProtectorButton}
+              </button>
             </div>
           </section>
 
