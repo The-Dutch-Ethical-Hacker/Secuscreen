@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Terms and Conditions for SecuScreen - Review our terms of use and policies.">
+  <meta name="keywords" content="terms and conditions, SecuScreen, usage policy">
+  <meta name="author" content="SecuScreen.com">
+  <title>SecuScreen - Terms and Conditions</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React en ReactDOM via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- Babel voor JSX -->
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #1f2937; color: #ffffff; }
+    .fade-in { animation: fadeIn 1s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function TermsConditions() {
+      const [language, setLanguage] = React.useState('en');
+
+      // Taal wisselen
+      const changeLanguage = (lang) => {
+        setLanguage(lang);
+      };
+
+      // Terms and Conditions inhoud per taal
+      const termsConditions = {
+        en: {
+          title: 'Terms and Conditions',
+          lastUpdated: 'Last updated: June 20, 2025',
+          intro: 'Welcome to SecuScreen. These Terms and Conditions govern your use of our website and services. By accessing or using our site, you agree to be bound by these terms.',
+          section1Title: '1. Acceptance of Terms',
+          section1Content: 'By using our services, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, please do not use our website.',
+          section2Title: '2. Purchases and Payments',
+          section2Content: 'All purchases are final unless otherwise stated. Payment is due at the time of order, and we accept various payment methods as outlined during checkout.',
+          section3Title: '3. Shipping and Delivery',
+          section3Content: 'We offer free shipping on all orders. Delivery times may vary depending on your location, and we are not liable for delays caused by external factors.',
+          section4Title: '4. Returns and Refunds',
+          section4Content: 'You may return products within 30 days of receipt for a full refund, provided they are unused and in original packaging. Contact us at info@SecuScreen.com for return instructions.',
+          section5Title: '5. Contact Us',
+          section5Content: 'For questions about these Terms and Conditions, email us at <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> or call +31 6 1234 5678.',
+          backToHome: 'Back to Home'
+        },
+        nl: {
+          title: 'Algemene Voorwaarden',
+          lastUpdated: 'Laatst bijgewerkt: 20 juni 2025',
+          intro: 'Welkom bij SecuScreen. Deze Algemene Voorwaarden regelen het gebruik van onze website en diensten. Door toegang te krijgen tot of gebruik te maken van onze site, gaat u akkoord met deze voorwaarden.',
+          section1Title: '1. Aanvaarding van de voorwaarden',
+          section1Content: 'Door onze diensten te gebruiken, gaat u akkoord met en bent u gebonden aan deze Algemene Voorwaarden. Als u niet akkoord gaat, gebruik dan onze website niet.',
+          section2Title: '2. Aankopen en betalingen',
+          section2Content: 'Alle aankopen zijn definitief, tenzij anders vermeld. Betaling is verschuldigd bij het plaatsen van de bestelling, en we accepteren verschillende betaalmethoden zoals aangegeven bij de kassa.',
+          section3Title: '3. Verzending en levering',
+          section3Content: 'We bieden gratis verzending op alle bestellingen. Levertijden kunnen variëren afhankelijk van uw locatie, en we zijn niet aansprakelijk voor vertragingen veroorzaakt door externe factoren.',
+          section4Title: '4. Retourneren en terugbetalingen',
+          section4Content: 'U kunt producten binnen 30 dagen na ontvangst retourneren voor een volledige terugbetaling, mits ongebruikt en in de originele verpakking. Neem contact op met info@SecuScreen.com voor retourinstructies.',
+          section5Title: '5. Contacteer ons',
+          section5Content: 'Voor vragen over deze Algemene Voorwaarden, stuur een e-mail naar <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> of bel +31 6 1234 5678.',
+          backToHome: 'Terug naar Home'
+        },
+        fr: {
+          title: 'Conditions Générales',
+          lastUpdated: 'Dernière mise à jour : 20 juin 2025',
+          intro: 'Bienvenue sur SecuScreen. Ces Conditions Générales régissent l’utilisation de notre site web et de nos services. En accédant ou en utilisant notre site, vous acceptez d’être lié par ces termes.',
+          section1Title: '1. Acceptation des conditions',
+          section1Content: 'En utilisant nos services, vous acceptez de vous conformer et d’être lié par ces Conditions Générales. Si vous n’êtes pas d’accord, veuillez ne pas utiliser notre site.',
+          section2Title: '2. Achats et paiements',
+          section2Content: 'Tous les achats sont définitifs sauf indication contraire. Le paiement est dû au moment de la commande, et nous acceptons divers moyens de paiement comme indiqué lors du paiement.',
+          section3Title: '3. Livraison',
+          section3Content: 'Nous offrons une livraison gratuite sur toutes les commandes. Les délais de livraison peuvent varier selon votre emplacement, et nous ne sommes pas responsables des retards causés par des facteurs externes.',
+          section4Title: '4. Retours et remboursements',
+          section4Content: 'Vous pouvez retourner des produits dans les 30 jours suivant la réception pour un remboursement complet, à condition qu’ils soient inutilisés et dans leur emballage d’origine. Contactez-nous à info@SecuScreen.com pour les instructions de retour.',
+          section5Title: '5. Contactez-nous',
+          section5Content: 'Pour des questions sur ces Conditions Générales, envoyez-nous un e-mail à <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> ou appelez le +31 6 1234 5678.',
+          backToHome: 'Retour à l\'Accueil'
+        },
+        es: {
+          title: 'Términos y Condiciones',
+          lastUpdated: 'Última actualización: 20 de junio de 2025',
+          intro: 'Bienvenido a SecuScreen. Estos Términos y Condiciones rigen el uso de nuestro sitio web y servicios. Al acceder o usar nuestro sitio, aceptas estar sujeto a estos términos.',
+          section1Title: '1. Aceptación de los términos',
+          section1Content: 'Al usar nuestros servicios, aceptas cumplir y estar sujeto a estos Términos y Condiciones. Si no estás de acuerdo, por favor no uses nuestro sitio web.',
+          section2Title: '2. Compras y pagos',
+          section2Content: 'Todas las compras son finales salvo que se indique lo contrario. El pago es debido al momento de la orden, y aceptamos varios métodos de pago como se indica en el checkout.',
+          section3Title: '3. Envío y entrega',
+          section3Content: 'Ofrecemos envío gratuito en todos los pedidos. Los tiempos de entrega pueden variar según tu ubicación, y no somos responsables de retrasos causados por factores externos.',
+          section4Title: '4. Devoluciones y reembolsos',
+          section4Content: 'Puedes devolver productos dentro de los 30 días posteriores a la recepción para un reembolso completo, siempre que estén sin usar y en su embalaje original. Contáctanos en info@SecuScreen.com para instrucciones de devolución.',
+          section5Title: '5. Contáctanos',
+          section5Content: 'Para preguntas sobre estos Términos y Condiciones, envíanos un correo a <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> o llama al +31 6 1234 5678.',
+          backToHome: 'Volver a Inicio'
+        },
+        de: {
+          title: 'Allgemeine Geschäftsbedingungen',
+          lastUpdated: 'Zuletzt aktualisiert: 20. Juni 2025',
+          intro: 'Willkommen bei SecuScreen. Diese Allgemeinen Geschäftsbedingungen regeln die Nutzung unserer Website und Dienste. Durch den Zugriff auf oder die Nutzung unserer Seite stimmen Sie diesen Bedingungen zu.',
+          section1Title: '1. Akzeptanz der Bedingungen',
+          section1Content: 'Durch die Nutzung unserer Dienste stimmen Sie zu, sich an diese Allgemeinen Geschäftsbedingungen zu halten und daran gebunden zu sein. Wenn Sie nicht einverstanden sind, nutzen Sie unsere Website bitte nicht.',
+          section2Title: '2. Käufe und Zahlungen',
+          section2Content: 'Alle Käufe sind endgültig, sofern nicht anders angegeben. Die Zahlung ist bei Auftragserteilung fällig, und wir akzeptieren verschiedene Zahlungsmethoden, wie bei der Kasse angegeben.',
+          section3Title: '3. Versand und Lieferung',
+          section3Content: 'Wir bieten kostenlosen Versand für alle Bestellungen an. Lieferzeiten können je nach Standort variieren, und wir haften nicht für Verzögerungen durch externe Faktoren.',
+          section4Title: '4. Rücksendungen und Rückerstattungen',
+          section4Content: 'Sie können Produkte innerhalb von 30 Tagen nach Erhalt zurücksenden, um eine volle Rückerstattung zu erhalten, sofern sie unbenutzt und in der Originalverpackung sind. Kontaktieren Sie uns unter info@SecuScreen.com für Rücksendeanweisungen.',
+          section5Title: '5. Kontaktieren Sie uns',
+          section5Content: 'Für Fragen zu diesen Allgemeinen Geschäftsbedingungen senden Sie uns eine E-Mail an <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> oder rufen Sie die +31 6 1234 5678 an.',
+          backToHome: 'Zurück zur Startseite'
+        }
+      };
+
+      return (
+        <div className="min-h-screen">
+          {/* Header */}
+          <header className="bg-gray-800 p-4 sticky top-0 z-20 shadow-lg">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-blue-400">SecuScreen</h1>
+              <div className="flex items-center space-x-4">
+                <select
+                  value={language}
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  className="bg-gray-700 text-white border-none rounded-md p-1 text-sm"
+                >
+                  <option value="en">EN</option>
+                  <option value="nl">NL</option>
+                  <option value="fr">FR</option>
+                  <option value="es">ES</option>
+                  <option value="de">DE</option>
+                </select>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="container mx-auto px-4 py-12 fade-in">
+            <h2 className="text-4xl font-bold mb-6 text-blue-400">{termsConditions[language].title}</h2>
+            <p className="text-sm mb-4 text-gray-400">{termsConditions[language].lastUpdated}</p>
+            <p className="mb-6">{termsConditions[language].intro}</p>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{termsConditions[language].section1Title}</h3>
+              <p>{termsConditions[language].section1Content}</p>
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{termsConditions[language].section2Title}</h3>
+              <p>{termsConditions[language].section2Content}</p>
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{termsConditions[language].section3Title}</h3>
+              <p>{termsConditions[language].section3Content}</p>
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{termsConditions[language].section4Title}</h3>
+              <p>{termsConditions[language].section4Content}</p>
+            </section>
+
+            <section>
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{termsConditions[language].section5Title}</h3>
+              <p dangerouslySetInnerHTML={{ __html: termsConditions[language].section5Content }}></p>
+            </section>
+
+            {/* Back to Home Button */}
+            <a href="https://the-dutch-ethical-hacker.github.io/Secuscreen/" className="mt-8 inline-block bg-blue-500 text-white px-6 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition hover:scale-105">
+              {termsConditions[language].backToHome}
+            </a>
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-gray-800 py-8">
+            <div className="container mx-auto px-4 text-center">
+              <p className="text-sm">{language === 'nl' ? '© 2025 SecuScreen.com. Alle rechten voorbehouden. 30 dagen bedenktijd en gratis verzending op alle bestellingen.' : 
+                language === 'en' ? '© 2025 SecuScreen.com. All rights reserved. 30-day return period and free shipping on all orders.' :
+                language === 'fr' ? '© 2025 SecuScreen.com. Tous droits réservés. Période de retour de 30 jours et livraison gratuite sur toutes les commandes.' :
+                language === 'es' ? '© 2025 SecuScreen.com. Todos los derechos reservados. Período de devolución de 30 días y envío gratuito en todos los pedidos.' :
+                '© 2025 SecuScreen.com. Alle Rechte vorbehalten. 30-tägige Rückgabefrist und kostenloser Versand auf alle Bestellungen.'}</p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // Render de app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<TermsConditions />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy Policy for SecuScreen - Learn how we protect your personal data.">
+  <meta name="keywords" content="privacy policy, SecuScreen, data protection, personal data">
+  <meta name="author" content="SecuScreen.com">
+  <title>SecuScreen - Privacy Policy</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React en ReactDOM via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- Babel voor JSX -->
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #1f2937; color: #ffffff; }
+    .fade-in { animation: fadeIn 1s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function PrivacyPolicy() {
+      const [language, setLanguage] = React.useState('en');
+
+      // Taal wisselen
+      const changeLanguage = (lang) => {
+        setLanguage(lang);
+      };
+
+      // Privacy Policy inhoud per taal
+      const privacyPolicy = {
+        en: {
+          title: 'Privacy Policy',
+          lastUpdated: 'Last updated: June 20, 2025',
+          intro: 'At SecuScreen, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.',
+          section1Title: '1. Information We Collect',
+          section1Content: 'We may collect personal information such as your name, email address, and payment details when you make a purchase or sign up for our newsletter. We also collect non-personal data like IP addresses and browsing behavior for analytics purposes.',
+          section2Title: '2. How We Use Your Information',
+          section2Content: 'Your information is used to process transactions, improve our services, and send you marketing communications if you have opted in. We do not sell your data to third parties.',
+          section3Title: '3. Data Security',
+          section3Content: 'We implement industry-standard security measures to protect your data, including encryption and secure servers. However, no online method is 100% secure, and we cannot guarantee absolute security.',
+          section4Title: '4. Your Rights',
+          section4Content: 'You have the right to access, correct, or delete your personal data. Contact us at info@SecuScreen.com to exercise these rights.',
+          section5Title: '5. Contact Us',
+          section5Content: 'For questions about this Privacy Policy, email us at <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> or call +31 6 1234 5678.',
+          backToHome: 'Back to Home'
+        },
+        nl: {
+          title: 'Privacybeleid',
+          lastUpdated: 'Laatst bijgewerkt: 20 juni 2025',
+          intro: 'Bij SecuScreen zijn we toegewijd aan het beschermen van uw privacy. Dit Privacybeleid legt uit hoe we uw informatie verzamelen, gebruiken, delen en beveiligen wanneer u onze website bezoekt of onze diensten gebruikt.',
+          section1Title: '1. Informatie die we verzamelen',
+          section1Content: 'We kunnen persoonlijke informatie zoals uw naam, e-mailadres en betalingsgegevens verzamelen wanneer u een aankoop doet of zich aanmeldt voor onze nieuwsbrief. We verzamelen ook niet-persoonlijke gegevens zoals IP-adressen en browsegedrag voor analytische doeleinden.',
+          section2Title: '2. Hoe we uw informatie gebruiken',
+          section2Content: 'Uw informatie wordt gebruikt om transacties te verwerken, onze diensten te verbeteren en u marketingberichten te sturen als u daarvoor hebt gekozen. We verkopen uw gegevens niet aan derden.',
+          section3Title: '3. Gegevensbeveiliging',
+          section3Content: 'We implementeren standaard beveiligingsmaatregelen uit de industrie om uw gegevens te beschermen, waaronder encryptie en beveiligde servers. Geen online methode is echter 100% veilig, en we kunnen geen absolute beveiliging garanderen.',
+          section4Title: '4. Uw rechten',
+          section4Content: 'U heeft het recht om uw persoonlijke gegevens in te zien, te corrigeren of te verwijderen. Neem contact met ons op via info@SecuScreen.com om deze rechten uit te oefenen.',
+          section5Title: '5. Contacteer ons',
+          section5Content: 'Voor vragen over dit Privacybeleid, stuur een e-mail naar <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> of bel +31 6 1234 5678.',
+          backToHome: 'Terug naar Home'
+        },
+        fr: {
+          title: 'Politique de Confidentialité',
+          lastUpdated: 'Dernière mise à jour : 20 juin 2025',
+          intro: 'Chez SecuScreen, nous nous engageons à protéger votre vie privée. Cette Politique de Confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos informations lorsque vous visitez notre site web ou utilisez nos services.',
+          section1Title: '1. Informations que nous collectons',
+          section1Content: 'Nous pouvons collecter des informations personnelles telles que votre nom, adresse e-mail et détails de paiement lorsque vous effectuez un achat ou vous inscrivez à notre newsletter. Nous collectons également des données non personnelles comme les adresses IP et le comportement de navigation à des fins d’analyse.',
+          section2Title: '2. Comment nous utilisons vos informations',
+          section2Content: 'Vos informations sont utilisées pour traiter les transactions, améliorer nos services et vous envoyer des communications marketing si vous y avez consenti. Nous ne vendons pas vos données à des tiers.',
+          section3Title: '3. Sécurité des données',
+          section3Content: 'Nous mettons en œuvre des mesures de sécurité standard de l’industrie pour protéger vos données, y compris le chiffrement et des serveurs sécurisés. Cependant, aucune méthode en ligne n’est 100 % sécurisée, et nous ne pouvons garantir une sécurité absolue.',
+          section4Title: '4. Vos droits',
+          section4Content: 'Vous avez le droit d’accéder, de corriger ou de supprimer vos données personnelles. Contactez-nous à info@SecuScreen.com pour exercer ces droits.',
+          section5Title: '5. Contactez-nous',
+          section5Content: 'Pour des questions concernant cette Politique de Confidentialité, envoyez-nous un e-mail à <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> ou appelez le +31 6 1234 5678.',
+          backToHome: 'Retour à l\'Accueil'
+        },
+        es: {
+          title: 'Política de Privacidad',
+          lastUpdated: 'Última actualización: 20 de junio de 2025',
+          intro: 'En SecuScreen, nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos, compartimos y protegemos tu información cuando visitas nuestro sitio web o utilizas nuestros servicios.',
+          section1Title: '1. Información que recopilamos',
+          section1Content: 'Podemos recopilar información personal como tu nombre, dirección de correo electrónico y detalles de pago cuando realizas una compra o te suscribes a nuestro boletín. También recopilamos datos no personales como direcciones IP y comportamiento de navegación para fines analíticos.',
+          section2Title: '2. Cómo usamos tu información',
+          section2Content: 'Tu información se utiliza para procesar transacciones, mejorar nuestros servicios y enviarte comunicaciones de marketing si has dado tu consentimiento. No vendemos tus datos a terceros.',
+          section3Title: '3. Seguridad de los datos',
+          section3Content: 'Implementamos medidas de seguridad estándar de la industria para proteger tus datos, incluyendo cifrado y servidores seguros. Sin embargo, ningún método en línea es 100% seguro, y no podemos garantizar una seguridad absoluta.',
+          section4Title: '4. Tus derechos',
+          section4Content: 'Tienes derecho a acceder, corregir o eliminar tus datos personales. Contáctanos en info@SecuScreen.com para ejercer estos derechos.',
+          section5Title: '5. Contáctanos',
+          section5Content: 'Para preguntas sobre esta Política de Privacidad, envíanos un correo a <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> o llama al +31 6 1234 5678.',
+          backToHome: 'Volver a Inicio'
+        },
+        de: {
+          title: 'Datenschutzrichtlinie',
+          lastUpdated: 'Zuletzt aktualisiert: 20. Juni 2025',
+          intro: 'Bei SecuScreen sind wir bestrebt, Ihre Privatsphäre zu schützen. Diese Datenschutzrichtlinie erklärt, wie wir Ihre Informationen sammeln, verwenden, weitergeben und schützen, wenn Sie unsere Website besuchen oder unsere Dienste nutzen.',
+          section1Title: '1. Informationen, die wir sammeln',
+          section1Content: 'Wir können personenbezogene Informationen wie Ihren Namen, Ihre E-Mail-Adresse und Zahlungsdetails sammeln, wenn Sie einen Kauf tätigen oder sich für unseren Newsletter anmelden. Wir erfassen auch nicht-personenbezogene Daten wie IP-Adressen und Browsing-Verhalten zu Analysezwecken.',
+          section2Title: '2. Wie wir Ihre Informationen verwenden',
+          section2Content: 'Ihre Informationen werden verwendet, um Transaktionen abzuwickeln, unsere Dienste zu verbessern und Ihnen Marketingmitteilungen zu senden, wenn Sie dies ausdrücklich erlaubt haben. Wir verkaufen Ihre Daten nicht an Dritte.',
+          section3Title: '3. Datensicherheit',
+          section3Content: 'Wir setzen branchenübliche Sicherheitsmaßnahmen ein, um Ihre Daten zu schützen, einschließlich Verschlüsselung und sichere Server. Keine Online-Methode ist jedoch zu 100 % sicher, und wir können keine absolute Sicherheit garantieren.',
+          section4Title: '4. Ihre Rechte',
+          section4Content: 'Sie haben das Recht, auf Ihre personenbezogenen Daten zuzugreifen, diese zu korrigieren oder zu löschen. Kontaktieren Sie uns unter info@SecuScreen.com, um diese Rechte auszuüben.',
+          section5Title: '5. Kontaktieren Sie uns',
+          section5Content: 'Für Fragen zu dieser Datenschutzrichtlinie senden Sie uns eine E-Mail an <a href="mailto:info@SecuScreen.com" class="text-blue-400 hover:underline">info@SecuScreen.com</a> oder rufen Sie die +31 6 1234 5678 an.',
+          backToHome: 'Zurück zur Startseite'
+        }
+      };
+
+      return (
+        <div className="min-h-screen">
+          {/* Header */}
+          <header className="bg-gray-800 p-4 sticky top-0 z-20 shadow-lg">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-blue-400">SecuScreen</h1>
+              <div className="flex items-center space-x-4">
+                <select
+                  value={language}
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  className="bg-gray-700 text-white border-none rounded-md p-1 text-sm"
+                >
+                  <option value="en">EN</option>
+                  <option value="nl">NL</option>
+                  <option value="fr">FR</option>
+                  <option value="es">ES</option>
+                  <option value="de">DE</option>
+                </select>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="container mx-auto px-4 py-12 fade-in">
+            <h2 className="text-4xl font-bold mb-6 text-blue-400">{privacyPolicy[language].title}</h2>
+            <p className="text-sm mb-4 text-gray-400">{privacyPolicy[language].lastUpdated}</p>
+            <p className="mb-6">{privacyPolicy[language].intro}</p>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{privacyPolicy[language].section1Title}</h3>
+              <p>{privacyPolicy[language].section1Content}</p>
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{privacyPolicy[language].section2Title}</h3>
+              <p>{privacyPolicy[language].section2Content}</p>
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{privacyPolicy[language].section3Title}</h3>
+              <p>{privacyPolicy[language].section3Content}</p>
+            </section>
+
+            <section className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{privacyPolicy[language].section4Title}</h3>
+              <p>{privacyPolicy[language].section4Content}</p>
+            </section>
+
+            <section>
+              <h3 className="text-2xl font-semibold mb-4 text-yellow-400">{privacyPolicy[language].section5Title}</h3>
+              <p dangerouslySetInnerHTML={{ __html: privacyPolicy[language].section5Content }}></p>
+            </section>
+
+            {/* Back to Home Button */}
+            <a href="https://the-dutch-ethical-hacker.github.io/Secuscreen/" className="mt-8 inline-block bg-blue-500 text-white px-6 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition hover:scale-105">
+              {privacyPolicy[language].backToHome}
+            </a>
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-gray-800 py-8">
+            <div className="container mx-auto px-4 text-center">
+              <p className="text-sm">{language === 'nl' ? '© 2025 SecuScreen.com. Alle rechten voorbehouden. 30 dagen bedenktijd en gratis verzending op alle bestellingen.' : 
+                language === 'en' ? '© 2025 SecuScreen.com. All rights reserved. 30-day return period and free shipping on all orders.' :
+                language === 'fr' ? '© 2025 SecuScreen.com. Tous droits réservés. Période de retour de 30 jours et livraison gratuite sur toutes les commandes.' :
+                language === 'es' ? '© 2025 SecuScreen.com. Todos los derechos reservados. Período de devolución de 30 días y envío gratuito en todos los pedidos.' :
+                '© 2025 SecuScreen.com. Alle Rechte vorbehalten. 30-tägige Rückgabefrist und kostenloser Versand auf alle Bestellungen.'}</p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // Render de app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<PrivacyPolicy />);
+  </script>
+</body>
+</html>
