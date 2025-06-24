@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -230,8 +231,8 @@
           subscriptionSelected: 'Subscription activated! You’ll receive a new Starter Kit every 6 months.',
           singleProtectorTitle: 'Single Screenprotector Deal',
           singleProtectorText: 'Grab a single premium anti-spy screenprotector at an unbeatable action price!',
-          singleProtectorOriginal: 'Regular Price: €14.95',
-          singleProtectorAction: 'Action Price: €9.99',
+          singleProtectorOriginal: '€14.95',
+          singleProtectorAction: '€9.99',
           singleProtectorButton: 'Buy Now',
           testimonialsTitle: 'What Our Customers Say',
           testimonials: [
@@ -294,8 +295,8 @@
           subscriptionSelected: 'Abonnement geactiveerd! Je ontvangt elke 6 maanden een nieuwe Starters-kit.',
           singleProtectorTitle: 'Enkele Screenprotector Deal',
           singleProtectorText: 'Koop een enkele premium anti-spy screenprotector tegen een onklopbare actieprijs!',
-          singleProtectorOriginal: 'Normale prijs: €14,95',
-          singleProtectorAction: 'Actieprijs: €9,99',
+          singleProtectorOriginal: '€14,95',
+          singleProtectorAction: '€9,99',
           singleProtectorButton: 'Koop nu',
           testimonialsTitle: 'Wat onze klanten zeggen',
           testimonials: [
@@ -358,8 +359,8 @@
           subscriptionSelected: 'Abonnement activé ! Vous recevrez un nouveau Kit de Démarrage tous les 6 mois.',
           singleProtectorTitle: 'Offre pour un Protecteur d’Écran Unique',
           singleProtectorText: 'Achetez un protecteur d’écran anti-espion premium à un prix d’action imbattable !',
-          singleProtectorOriginal: 'Prix régulier : 14,95 €',
-          singleProtectorAction: 'Prix d’action : 9,99 €',
+          singleProtectorOriginal: '14,95 €',
+          singleProtectorAction: '9,99 €',
           singleProtectorButton: 'Acheter maintenant',
           testimonialsTitle: 'Ce que disent nos clients',
           testimonials: [
@@ -422,8 +423,8 @@
           subscriptionSelected: '¡Suscripción activada! Recibirás un nuevo Kit de Inicio cada 6 meses.',
           singleProtectorTitle: 'Oferta de Protector de Pantalla Individual',
           singleProtectorText: '¡Consigue un protector de pantalla anti-espías premium a un precio de acción increíble!',
-          singleProtectorOriginal: 'Precio regular: 14,95 €',
-          singleProtectorAction: 'Precio de acción: 9,99 €',
+          singleProtectorOriginal: '14,95 €',
+          singleProtectorAction: '9,99 €',
           singleProtectorButton: 'Compra ahora',
           testimonialsTitle: 'Lo que dicen nuestros clientes',
           testimonials: [
@@ -486,8 +487,8 @@
           subscriptionSelected: 'Abonnement aktiviert! Sie erhalten alle 6 Monate ein neues Starter-Kit.',
           singleProtectorTitle: 'Angebot für einen Einzelnen Displayschutz',
           singleProtectorText: 'Kaufen Sie einen premium Anti-Spionage-Displayschutz zu einem unschlagbaren Aktionspreis!',
-          singleProtectorOriginal: 'Regulärer Preis: 14,95 €',
-          singleProtectorAction: 'Aktionspreis: 9,99 €',
+          singleProtectorOriginal: '14,95 €',
+          singleProtectorAction: '9,99 €',
           singleProtectorButton: 'Jetzt kaufen',
           testimonialsTitle: 'Was unsere Kunden sagen',
           testimonials: [
@@ -689,7 +690,8 @@
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
-<img src="starterskit.png" alt="Anti-spy screenprotector starters-kit" className="w-[500px] rounded-lg shadow-2xl hover-scale"/>                </div>
+                  <img src="/images/product-bundle.png" alt="Anti-spy screenprotector starters-kit" className="w-full rounded-lg shadow-2xl hover-scale"/>
+                </div>
                 <div className="text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400">{translations[language].productTitle}</h3>
                   <p className="text-lg mb-4">{translations[language].productDescription}</p>
@@ -741,7 +743,6 @@
           {/* Testimonials-sectie */}
           <section id="testimonials" className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-400">{translations[language].testimonialsTitle}</h2>
               <div className="carousel-container flex space-x-4">
                 {translations[language].testimonials.map((testimonial, index) => (
                   <div key={index} className="carousel-item flex-none w-80 p-6 bg-gray-800 rounded-lg shadow-lg hover-scale">
@@ -782,7 +783,42 @@
               </div>
             </div>
           </section>
+<section id="product" className="py-16 bg-gray-800 fade-in">
+  <div className="container mx-auto px-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      {/* Product 1: Starter Kit */}
+      <div className="bg-gray-700 p-6 rounded-lg shadow-lg hover-scale text-center min-h-[300px] flex flex-col justify-between">
+        <div>
+          <img src="/images/product-bundle.png" alt="Anti-spy screenprotector starters-kit" className="w-32 h-32 mx-auto mb-4 rounded-lg object-cover" />
+          <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].productTitle}</h3>
+          <p className="text-md mb-2">
+            <span className="line-through text-gray-400">€39,99</span>
+            <span className="text-yellow-400 ml-2">€19,99</span>
+          </p>
+          <p className="text-md text-red-500 mb-4">{translations[language].productUrgency} {formatTime(timeLeft)}</p>
+        </div>
+        <button onClick={addToCart} className="bg-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-600 transition pulse w-full">
+          {language === 'nl' ? 'Toevoegen aan winkelwagen' : language === 'en' ? 'Add to cart' : language === 'fr' ? 'Ajouter au panier' : language === 'es' ? 'Añadir al carrito' : 'Zum Warenkorb hinzufügen'}
+        </button>
+      </div>
 
+      {/* Product 2: Single Protector Deal */}
+      <div className="bg-gray-700 p-6 rounded-lg shadow-lg hover-scale text-center min-h-[300px] flex flex-col justify-between">
+        <div>
+          <img src="/images/single-protector.png" alt="Single anti-spy screenprotector" className="w-32 h-32 mx-auto mb-4 rounded-lg object-cover" />
+          <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].singleProtectorTitle}</h3>
+          <p className="text-md mb-2">
+            <span className="line-through text-gray-400">€14,95</span>
+            <span className="text-yellow-400 ml-2">€9,99</span>
+          </p>
+        </div>
+        <button onClick={addToCart} className="bg-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-600 transition pulse w-full">
+          {language === 'nl' ? 'Toevoegen aan winkelwagen' : language === 'en' ? 'Add to cart' : language === 'fr' ? 'Ajouter au panier' : language === 'es' ? 'Añadir al carrito' : 'Zum Warenkorb hinzufügen'}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
           {/* Abonnementssectie */}
           <section id="subscription" className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4 text-center">
@@ -816,7 +852,21 @@
               </button>
             </div>
           </section>
-
+<section id="comparison" className="py-16 bg-gray-800 fade-in">
+  <div className="container mx-auto px-4 text-center">
+    <div className="overflow-x-auto">
+      <table className="w-full md:w-auto mx-auto bg-gray-700 rounded-lg shadow-lg">
+        <thead><tr className="bg-gray-800"><th className="p-4 text-left text-yellow-400">Feature</th><th className="p-4 text-center text-yellow-400">SecuScreen</th><th className="p-4 text-center text-yellow-400">Competitors</th></tr></thead>
+        <tbody>
+          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">180° Privacy Protection</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">Blue Light Reduction</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">Scratch-Resistant Glass</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">High Touchscreen Sensitivity</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
           {/* USP-sectie */}
           <section className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4">
@@ -844,7 +894,6 @@
           {/* FAQ-sectie */}
           <section id="faq" className="py-16 bg-gray-800 fade-in">
             <div className="container mx-auto px-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-400">{translations[language].faqTitle}</h2>
               <div className="space-y-6 max-w-2xl mx-auto">
                 <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
                   <h3 className="text-xl font-semibold mb-2">{translations[language].faqDelivery}</h3>
@@ -866,8 +915,12 @@
           <section id="contact" className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-blue-400">{translations[language].contactTitle}</h2>
-              <p className="text-lg mb-4" dangerouslySetInnerHTML={{ __html: translations[language].contactText }}></p>
-            </div>
+            			<p className="text-lg mb-4" dangerouslySetInnerHTML={{ __html: translations[language].contactText }}></p>
+            <div className="flex justify-center space-x-4">
+      <a href="mailto:info@SecuScreen.com" className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition hover-scale">E-mail</a>
+      <a href="https://wa.me/31612345678" target="_blank" className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition hover-scale">WhatsApp</a>
+    </div>
+			</div>
           </section>
 
           {/* Footer */}
@@ -877,7 +930,8 @@
               <p className="mt-2 space-x-4">
                 <a href="privacypolicy.html" className="hover:text-blue-400 transition">{language === 'nl' ? 'Privacybeleid' : language === 'en' ? 'Privacy Policy' : language === 'fr' ? 'Politique de confidentialité' : language === 'es' ? 'Política de privacidad' : 'Datenschutzrichtlinie'}</a>
                 <a href="Terms.html" className="hover:text-blue-400 transition">{language === 'nl' ? 'Algemene voorwaarden' : language === 'en' ? 'Terms & Conditions' : language === 'fr' ? 'Conditions générales' : language === 'es' ? 'Términos y condiciones' : 'Allgemeine Geschäftsbedingungen'}</a>
-                <a href="https://instagram.com/privacyscreen" className="hover:text-blue-400 transition">Instagram</a>
+                <a href="https://instagram.com/SecuScreen" className="hover:text-blue-400 transition">Instagram</a>
+                <a href="https://youtube.com/SecuScreen" className="hover:text-blue-400 transition">YouTube</a>
               </p>
             </div>
           </footer>
