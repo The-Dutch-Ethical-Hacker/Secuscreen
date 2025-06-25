@@ -1,260 +1,518 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecuScreen - Afrekenen</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            max-width: 1200px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Checkout at SecuScreen - Enter your details and choose your payment method.">
+  <meta name="keywords" content="checkout SecuScreen, iPhone screenprotector, payment, privacy">
+  <meta name="author" content="SecuScreen.com">
+  <title>Checkout - SecuScreen</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React en ReactDOM via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- Babel voor JSX -->
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #1e293b; color: #fff; }
+    .fade-in { animation: fadeIn 1s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .hover-scale { transition: transform 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+    .pulse { animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    .nav-menu {
+      display: flex;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    .nav-menu.mobile {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: #1f2937;
+      padding: 1rem;
+      flex-direction: column;
+      z-index: 10;
+    }
+    .nav-menu.mobile.active {
+      display: flex;
+    }
+    @media (max-width: 640px) {
+      .nav-menu.desktop {
+        display: none;
+      }
+      .nav-menu.mobile {
+        display: none;
+      }
+      .nav-menu.mobile.active {
+        display: flex;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+    @media (min-width: 641px) {
+      .nav-menu.desktop {
+        display: flex;
+        flex-direction: row;
+      }
+      .nav-menu.mobile {
+        display: none;
+      }
+      .hamburger {
+        display: none;
+      }
+    }
+    .price-table {
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+    }
+    .price-table td {
+      padding: 0.75rem 1rem;
+      background-color: #2d3748;
+      border-radius: 0.375rem;
+    }
+    .price-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+    }
+    .price-table td:last-child {
+      text-align: right;
+    }
+    .total-row {
+      background-color: #3b82f6;
+      font-weight: 700;
+      color: #fff;
+    }
+  </style>
 </head>
-<body>
-    <div class="container my-5">
-        <header class="mb-4">
-            <h1 class="display-4">SecuScreen Checkout</h1>
-            <a href="index.html" class="btn btn-link">Terug naar Winkel</a>
-        </header>
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3>Jouw Winkelwagen</h3>
-                    </div>
-                    <div class="card-body" id="cartItems">
-                        <!-- Winkelwagenitems worden hier weergegeven -->
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3>Klantgegevens</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="customerForm">
-                            <div class="mb-3">
-                                <label for="fullname" class="form-label">Volledige Naam</label>
-                                <input type="text" class="form-control" id="fullname" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">E-mail</label>
-                                <input type="email" class="form-control" id="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Adres</label>
-                                <input type="text" class="form-control" id="address" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="city" class="form-label">Stad</label>
-                                <input type="text" class="form-control" id="city" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="zip" class="form-label">Postcode</label>
-                                <input type="text" class="form-control" id="zip" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="country" class="form-label">Land</label>
-                                <select class="form-select" id="country" required>
-                                    <option value="">Kies een land</option>
-                                    <option value="NL">Nederland</option>
-                                    <option value="BE">België</option>
-                                    <option value="DE">Duitsland</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3>Besteloverzicht</h3>
-                    </div>
-                    <div class="card-body" id="orderSummary">
-                        <!-- Samenvatting wordt hier weergegeven -->
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3>Betalingsmethode</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment" id="creditCard" value="creditCard" checked>
-                            <label class="form-check-label" for="creditCard">Creditcard</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment" id="paypal" value="paypal">
-                            <label class="form-check-label" for="paypal">PayPal</label>
-                        </div>
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="radio" name="payment" id="bankTransfer" value="bankTransfer">
-                            <label class="form-check-label" for="bankTransfer">Bankoverschrijving</label>
-                        </div>
-                        <div id="creditCardFields">
-                            <div class="mb-3">
-                                <label for="cardNumber" class="form-label">Kaartnummer</label>
-                                <input type="text" class="form-control" id="cardNumber">
-                            </div>
-                            <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label for="expDate" class="form-label">Vervaldatum</label>
-                                    <input type="text" class="form-control" id="expDate" placeholder="MM/JJ">
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <label for="cvv" class="form-label">CVV</label>
-                                    <input type="text" class="form-control" id="cvv">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="promoCode" class="form-label">Promotiecode</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="promoCode">
-                        <button class="btn btn-outline-secondary" onclick="applyPromo()">Toepassen</button>
-                    </div>
-                </div>
-                <button class="btn btn-primary w-100" onclick="placeOrder()">Bestelling Plaatsen</button>
-            </div>
-        </div>
-    </div>
+<body class="bg-gray-900 text-white">
+  <div id="root"></div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let cart = [
-            { id: 1, name: 'Anti-Spy Screen Protector', price: 19.99, quantity: 1 },
-            { id: 2, name: 'Lens Protector', price: 9.99, quantity: 2 }
+  <script type="text/babel">
+    function Checkout() {
+      const [language, setLanguage] = React.useState('en');
+      const [menuOpen, setMenuOpen] = React.useState(false);
+      const [cartItems, setCartItems] = React.useState(() => {
+        const savedCart = localStorage.getItem('cartItems');
+        return savedCart ? JSON.parse(savedCart) : [
+          { id: 1, name: 'Anti-Spy Screenprotector Starter Kit', price: 19.99, quantity: 1 },
+          { id: 2, name: 'Single Screenprotector Deal', price: 9.99, quantity: 1 },
         ];
-        let promoCode = '';
+      });
+      const [selectedPayment, setSelectedPayment] = React.useState('paypal');
 
-        function renderCart() {
-            const cartItemsDiv = document.getElementById('cartItems');
-            cartItemsDiv.innerHTML = '';
-            cart.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'd-flex justify-content-between align-items-center mb-3';
-                itemDiv.innerHTML = `
-                    <div>
-                        <h5>${item.name}</h5>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-secondary" onclick="updateQuantity(${index}, -1)">-</button>
-                            <button type="button" class="btn btn-outline-secondary disabled">${item.quantity}</button>
-                            <button type="button" class="btn btn-outline-secondary" onclick="updateQuantity(${index}, 1)">+</button>
-                        </div>
-                    </div>
-                    <div>
-                        <span>€${(item.price * item.quantity).toFixed(2)}</span>
-                        <button class="btn btn-link text-danger" onclick="removeItem(${index})"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-                cartItemsDiv.appendChild(itemDiv);
-            });
-        }
+      // Taal wisselen
+      const changeLanguage = (lang) => {
+        setLanguage(lang);
+      };
 
-        function updateQuantity(index, change) {
-            cart[index].quantity = Math.max(1, cart[index].quantity + change);
-            renderCart();
-            renderSummary();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
+      // Toggle menu
+      const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+      };
 
-        function removeItem(index) {
-            cart.splice(index, 1);
-            renderCart();
-            renderSummary();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
+      // Aantal aanpassen
+      const updateQuantity = (id, delta) => {
+        setCartItems(cartItems.map(item =>
+          item.id === id ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item
+        ).filter(item => item.quantity > 0));
+        localStorage.setItem('cartItems', JSON.stringify(cartItems.map(item =>
+          item.id === id ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item
+        ).filter(item => item.quantity > 0)));
+      };
 
-        function calculateTotals() {
-            const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-            const shipping = 5.00;
-            const tax = subtotal * 0.10;
-            const discount = promoCode === 'DISCOUNT10' ? subtotal * 0.10 : 0;
-            const total = subtotal + shipping + tax - discount;
-            return { subtotal, shipping, tax, discount, total };
-        }
+      // Bereken totaal en btw (21% als voorbeeld)
+      const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+      const taxRate = 0.21;
+      const tax = subtotal * taxRate;
+      const total = subtotal + tax;
 
-        function renderSummary() {
-            const { subtotal, shipping, tax, discount, total } = calculateTotals();
-            const summaryDiv = document.getElementById('orderSummary');
-            summaryDiv.innerHTML = `
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Subtotaal</span>
-                        <span>€${subtotal.toFixed(2)}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Verzending</span>
-                        <span>€${shipping.toFixed(2)}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Belasting</span>
-                        <span>€${tax.toFixed(2)}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between text-success">
-                        <span>Korting</span>
-                        <span>-€${discount.toFixed(2)}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between fw-bold">
-                        <span>Totaal</span>
-                        <span>€${total.toFixed(2)}</span>
-                    </li>
-                </ul>
-            `;
-        }
+      // Vertaalteksten
+      const translations = {
+        en: {
+          title: 'Checkout',
+          subtitle: 'Enter your details and choose a payment method.',
+          nameLabel: 'Name',
+          emailLabel: 'Email address',
+          phoneLabel: 'Phone number',
+          streetLabel: 'Street',
+          houseNumberLabel: 'House number',
+          postalCodeLabel: 'Postal code',
+          cityLabel: 'City',
+          countryLabel: 'Country',
+          phoneModelLabel: 'iPhone model',
+          paymentLabel: 'Payment method',
+          paypal: 'PayPal',
+          creditcard: 'Creditcard',
+          invoice: 'Pay later by invoice',
+          submitButton: 'Proceed to payment',
+          backLink: 'Back to shop',
+          cartSection: 'Your Cart',
+          removeItem: 'Remove',
+          addItem: 'Add',
+          discountCode: 'Discount Code',
+          applyButton: 'Apply',
+          subtotal: 'Subtotal',
+          tax: 'Tax (21%)',
+          total: 'Total',
+          freeShipping: 'Shipping',
+          invoiceNote: 'Payment by invoice must be settled within 30 days.',
+        },
+        nl: {
+          title: 'Afrekenen',
+          subtitle: 'Vul je gegevens in en kies een betaalmethode.',
+          nameLabel: 'Naam',
+          emailLabel: 'E-mailadres',
+          phoneLabel: 'Telefoonnummer',
+          streetLabel: 'Straat',
+          houseNumberLabel: 'Huisnummer',
+          postalCodeLabel: 'Postcode',
+          cityLabel: 'Stad',
+          countryLabel: 'Land',
+          phoneModelLabel: 'iPhone-model',
+          paymentLabel: 'Betaalmethode',
+          paypal: 'PayPal',
+          creditcard: 'Creditcard',
+          invoice: 'Later betalen via factuur',
+          submitButton: 'Doorgaan met betalen',
+          backLink: 'Terug naar winkel',
+          cartSection: 'Jouw winkelwagen',
+          removeItem: 'Verwijder',
+          addItem: 'Voeg toe',
+          discountCode: 'Kortingscode',
+          applyButton: 'Toepassen',
+          subtotal: 'Subtotaal',
+          tax: 'BTW (21%)',
+          total: 'Totaal',
+          freeShipping: 'Verzending',
+          invoiceNote: 'Betaling via factuur moet binnen 30 dagen worden voldaan.',
+        },
+        fr: {
+          title: 'Paiement',
+          subtitle: 'Entrez vos coordonnées et choisissez un mode de paiement.',
+          nameLabel: 'Nom',
+          emailLabel: 'Adresse e-mail',
+          phoneLabel: 'Numéro de téléphone',
+          streetLabel: 'Rue',
+          houseNumberLabel: 'Numéro de maison',
+          postalCodeLabel: 'Code postal',
+          cityLabel: 'Ville',
+          countryLabel: 'Pays',
+          phoneModelLabel: 'Modèle d’iPhone',
+          paymentLabel: 'Mode de paiement',
+          paypal: 'PayPal',
+          creditcard: 'Carte de crédit',
+          invoice: 'Payer plus tard par facture',
+          submitButton: 'Passer au paiement',
+          backLink: 'Retour à la boutique',
+          cartSection: 'Votre panier',
+          removeItem: 'Supprimer',
+          addItem: 'Ajouter',
+          discountCode: 'Code de réduction',
+          applyButton: 'Appliquer',
+          subtotal: 'Sous-total',
+          tax: 'TVA (21%)',
+          total: 'Total',
+          freeShipping: 'Livraison',
+          invoiceNote: 'Le paiement par facture doit être réglé dans les 30 jours.',
+        },
+        es: {
+          title: 'Pago',
+          subtitle: 'Ingresa tus datos y elige un método de pago.',
+          nameLabel: 'Nombre',
+          emailLabel: 'Correo electrónico',
+          phoneLabel: 'Número de teléfono',
+          streetLabel: 'Calle',
+          houseNumberLabel: 'Número de casa',
+          postalCodeLabel: 'Código postal',
+          cityLabel: 'Ciudad',
+          countryLabel: 'País',
+          phoneModelLabel: 'Modelo de iPhone',
+          paymentLabel: 'Método de pago',
+          paypal: 'PayPal',
+          creditcard: 'Tarjeta de crédito',
+          invoice: 'Pagar más tarde por factura',
+          submitButton: 'Continuar con el pago',
+          backLink: 'Volver a la tienda',
+          cartSection: 'Tu carrito',
+          removeItem: 'Eliminar',
+          addItem: 'Añadir',
+          discountCode: 'Código de descuento',
+          applyButton: 'Aplicar',
+          subtotal: 'Subtotal',
+          tax: 'IVA (21%)',
+          total: 'Total',
+          freeShipping: 'Envío',
+          invoiceNote: 'El pago por factura debe realizarse dentro de 30 días.',
+        },
+        de: {
+          title: 'Kasse',
+          subtitle: 'Geben Sie Ihre Daten ein und wählen Sie eine Zahlungsmethode.',
+          nameLabel: 'Name',
+          emailLabel: 'E-Mail-Adresse',
+          phoneLabel: 'Telefonnummer',
+          streetLabel: 'Straße',
+          houseNumberLabel: 'Hausnummer',
+          postalCodeLabel: 'Postleitzahl',
+          cityLabel: 'Stadt',
+          countryLabel: 'Land',
+          phoneModelLabel: 'iPhone-Modell',
+          paymentLabel: 'Zahlungsmethode',
+          paypal: 'PayPal',
+          creditcard: 'Kreditkarte',
+          invoice: 'Später per Rechnung bezahlen',
+          submitButton: 'Zur Zahlung fortfahren',
+          backLink: 'Zurück zum Shop',
+          cartSection: 'Ihr Warenkorb',
+          removeItem: 'Entfernen',
+          addItem: 'Hinzufügen',
+          discountCode: 'Rabattcode',
+          applyButton: 'Anwenden',
+          subtotal: 'Zwischensumme',
+          tax: 'MwSt. (21%)',
+          total: 'Gesamt',
+          freeShipping: 'Versand',
+          invoiceNote: 'Die Zahlung per Rechnung muss innerhalb von 30 Tagen erfolgen.',
+        },
+      };
 
-        function applyPromo() {
-            const input = document.getElementById('promoCode').value;
-            if (input === 'DISCOUNT10') {
-                promoCode = 'DISCOUNT10';
-                alert('Promotiecode toegepast!');
-            } else {
-                promoCode = '';
-                alert('Ongeldige promotiecode.');
-            }
-            renderSummary();
-        }
+      // iPhone-modellen van 11 tot 16 (juni 2025 als meest recent)
+      const iPhoneModels = [
+        'iPhone 11', 'iPhone 11 Pro', 'iPhone 11 Pro Max',
+        'iPhone 12', 'iPhone 12 Mini', 'iPhone 12 Pro', 'iPhone 12 Pro Max',
+        'iPhone 13', 'iPhone 13 Mini', 'iPhone 13 Pro', 'iPhone 13 Pro Max',
+        'iPhone 14', 'iPhone 14 Plus', 'iPhone 14 Pro', 'iPhone 14 Pro Max',
+        'iPhone 15', 'iPhone 15 Plus', 'iPhone 15 Pro', 'iPhone 15 Pro Max',
+        'iPhone 16', 'iPhone 16 Plus', 'iPhone 16 Pro', 'iPhone 16 Pro Max'
+      ];
 
-        function placeOrder() {
-            const form = document.getElementById('customerForm');
-            if (form.checkValidity()) {
-                alert('Bestelling succesvol geplaatst!');
-                cart = [];
-                localStorage.removeItem('cart');
-                window.location.href = 'index.html';
-            } else {
-                form.reportValidity();
-            }
-        }
+      return (
+        <div className="min-h-screen">
+          {/* Header */}
+          <header className="bg-gray-800 p-4 sticky top-0 z-20 shadow-lg">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-blue-400">SecuScreen</h1>
+              <div className="flex items-center space-x-4 md:space-x-6">
+                <button className="hamburger md:hidden text-white focus:outline-none" onClick={toggleMenu}>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                  </svg>
+                </button>
+                <nav className="nav-menu desktop md:flex md:space-x-6">
+                  <a href="#home" className="hover:text-blue-400 transition">Home</a>
+                  <a href="#product" className="hover:text-blue-400 transition">Product</a>
+                  <a href="#testimonials" className="hover:text-blue-400 transition">Reviews</a>
+                  <a href="#faq" className="hover:text-blue-400 transition">FAQ</a>
+                  <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
+                </nav>
+                <nav className={`nav-menu mobile ${menuOpen ? 'active' : ''}`}>
+                  <a href="#home" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Home</a>
+                  <a href="#product" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Product</a>
+                  <a href="#testimonials" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Reviews</a>
+                  <a href="#faq" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>FAQ</a>
+                  <a href="#contact" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Contact</a>
+                </nav>
+                <select
+                  value={language}
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  className="bg-gray-700 text-white border-none rounded-md p-1 text-sm"
+                >
+                  <option value="en">EN</option>
+                  <option value="nl">NL</option>
+                  <option value="fr">FR</option>
+                  <option value="es">ES</option>
+                  <option value="de">DE</option>
+                </select>
+                <span className="relative">
+                  🛒 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-sm">{cartItems.reduce((total, item) => total + item.quantity, 0)}</span>
+                </span>
+              </div>
+            </div>
+          </header>
 
-        // Initiële weergave
-        if (localStorage.getItem('cart')) {
-            cart = JSON.parse(localStorage.getItem('cart'));
-        }
-        renderCart();
-        renderSummary();
+          {/* Cart Section */}
+          <section className="py-8 bg-gray-800 fade-in">
+            <div className="container mx-auto px-4 max-w-lg">
+              <h2 className="text-2xl font-bold mb-4 text-blue-400">{translations[language].cartSection}</h2>
+              {cartItems.map(item => (
+                <div key={item.id} className="flex justify-between items-center bg-gray-700 p-4 mb-2 rounded-lg">
+                  <span>{item.name} - ${item.price.toFixed(2)} x {item.quantity}</span>
+                  <div>
+                    <button onClick={() => updateQuantity(item.id, -1)} className="bg-red-500 text-white px-2 py-1 rounded mr-2 hover:bg-red-600 transition">{translations[language].removeItem}</button>
+                    <button onClick={() => updateQuantity(item.id, 1)} className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">{translations[language].addItem}</button>
+                  </div>
+                </div>
+              ))}
+              <div className="mt-6">
+                <table className="price-table w-full">
+                  <tbody>
+                    <tr>
+                      <td>{translations[language].subtotal}</td>
+                      <td>${subtotal.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td>{translations[language].tax}</td>
+                      <td>${tax.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td>{translations[language].freeShipping}</td>
+                      <td>FREE</td>
+                    </tr>
+                    <tr className="total-row">
+                      <td>{translations[language].total}</td>
+                      <td>${total.toFixed(2)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                {selectedPayment === 'invoice' && (
+                  <p className="text-sm text-gray-400 mt-2">{translations[language].invoiceNote}</p>
+                )}
+                <label className="block text-sm font-medium mb-2 mt-4">{translations[language].discountCode}</label>
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    placeholder="Enter code"
+                  />
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                    {translations[language].applyButton}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        // Betalingsmethode logica
-        const paymentRadios = document.querySelectorAll('input[name="payment"]');
-        paymentRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'creditCard') {
-                    document.getElementById('creditCardFields').style.display = 'block';
-                } else {
-                    document.getElementById('creditCardFields').style.display = 'none';
-                }
-            });
-        });
-    </script>
+          {/* Checkout-sectie */}
+          <section className="py-16 bg-gray-800 fade-in">
+            <div className="container mx-auto px-4 max-w-lg">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-blue-400">{translations[language].title}</h2>
+              <p className="text-lg mb-8 text-center">{translations[language].subtitle}</p>
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].nameLabel}</label>
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].emailLabel}</label>
+                  <input
+                    type="email"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].phoneLabel}</label>
+                  <input
+                    type="tel"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].streetLabel}</label>
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    required
+                  />
+                </div>
+                <div className="flex space-x-4">
+                  <div className="w-1/2">
+                    <label className="block text-sm font-medium mb-2">{translations[language].houseNumberLabel}</label>
+                    <input
+                      type="text"
+                      className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <label className="block text-sm font-medium mb-2">{translations[language].postalCodeLabel}</label>
+                    <input
+                      type="text"
+                      className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].cityLabel}</label>
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].countryLabel}</label>
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].phoneModelLabel}</label>
+                  <select className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none">
+                    {iPhoneModels.map((model, index) => (
+                      <option key={index} value={model}>{model}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">{translations[language].paymentLabel}</label>
+                  <select
+                    value={selectedPayment}
+                    onChange={(e) => setSelectedPayment(e.target.value)}
+                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                  >
+                    <option value="paypal">{translations[language].paypal}</option>
+                    <option value="creditcard">{translations[language].creditcard}</option>
+                    <option value="invoice">{translations[language].invoice}</option>
+                  </select>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition pulse"
+                >
+                  {translations[language].submitButton}
+                </button>
+              </form>
+              <div className="mt-6 text-center">
+                <a href="index.html" className="text-blue-400 hover:underline hover-scale">
+                  {translations[language].backLink}
+                </a>
+              </div>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="bg-gray-800 py-8">
+            <div className="container mx-auto px-4 text-center">
+              <p className="text-sm">© 2025 SecuScreen.com. All rights reserved. 30-day return period and free shipping on all orders.</p>
+              <p className="mt-2 space-x-4">
+                <a href="privacypolicy.html" className="hover:text-blue-400 transition">Privacy Policy</a>
+                <a href="Terms.html" className="hover:text-blue-400 transition">Terms & Conditions</a>
+                <a href="https://instagram.com/privacyscreen" className="hover:text-blue-400 transition">Instagram</a>
+              </p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // Render de app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<Checkout />);
+  </script>
 </body>
 </html>
