@@ -182,10 +182,16 @@
         return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       };
 
-      // Product aan winkelwagen toevoegen
-      const addToCart = () => {
-        setCartCount(cartCount + 1);
-        alert(translations[language].cartAdded);
+const addToCart = () => {
+        const newCartCount = cartCount + 1;
+        setCartCount(newCartCount);
+        localStorage.setItem('cartCount', newCartCount);
+
+        // Voeg items toe aan localStorage als array
+        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        cartItems.push({ id: 1, name: 'Anti-Spy Screenprotector Starter Kit', price: 19.99, quantity: 1 });
+        cartItems.push({ id: 2, name: 'Single Screenprotector Deal', price: 9.99, quantity: 1 });
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
       };
 
       // Abonnement kiezen
