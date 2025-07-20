@@ -188,10 +188,8 @@ const addToCart = () => {
         localStorage.setItem('cartCount', newCartCount);
 
         // Voeg items toe aan localStorage als array
-        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        cartItems.push({ id: 1, name: 'Anti-Spy Screenprotector Starter Kit', price: 19.99, quantity: 1 });
-        cartItems.push({ id: 2, name: 'Single Screenprotector Deal', price: 9.99, quantity: 1 });
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+const selectedProduct = { id: 2, name: 'Single Screenprotector Deal', price: 9.99, quantity: 1 };
+localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
       };
 
       // Abonnement kiezen
