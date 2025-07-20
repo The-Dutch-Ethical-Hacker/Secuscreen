@@ -99,13 +99,10 @@
     function Checkout() {
       const [language, setLanguage] = React.useState('en');
       const [menuOpen, setMenuOpen] = React.useState(false);
-      const [cartItems, setCartItems] = React.useState(() => {
-        const savedCart = localStorage.getItem('cartItems');
-        return savedCart ? JSON.parse(savedCart) : [
-          { id: 1, name: 'Anti-Spy Screenprotector Starter Kit', price: 19.99, quantity: 1 },
-          { id: 2, name: 'Single Screenprotector Deal', price: 9.99, quantity: 1 },
-        ];
-      });
+const [cartItems, setCartItems] = React.useState(() => {
+  const savedCart = localStorage.getItem('cartItems');
+  return savedCart ? JSON.parse(savedCart) : [];
+});
       const [selectedPayment, setSelectedPayment] = React.useState('paypal');
       const [cardDetails, setCardDetails] = React.useState({ number: '', expiry: '', cvc: '' });
 
