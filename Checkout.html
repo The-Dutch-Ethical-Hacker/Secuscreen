@@ -8,6 +8,7 @@
   <meta name="author" content="SecuScreen.com">
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Checkout - SecuScreen</title>
+
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- React en ReactDOM via CDN -->
@@ -17,6 +18,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body { font-family: 'Poppins', sans-serif; background-color: #1e293b; color: #fff; }
     .fade-in { animation: fadeIn 1s ease-in; }
@@ -25,6 +27,7 @@
     .hover-scale:hover { transform: scale(1.05); }
     .pulse { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
     .nav-menu {
       display: flex;
       transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -40,35 +43,20 @@
       flex-direction: column;
       z-index: 10;
     }
-    .nav-menu.mobile.active {
-      display: flex;
-    }
+    .nav-menu.mobile.active { display: flex; }
+
     @media (max-width: 640px) {
-      .nav-menu.desktop {
-        display: none;
-      }
-      .nav-menu.mobile {
-        display: none;
-      }
-      .nav-menu.mobile.active {
-        display: flex;
-      }
-      .hamburger {
-        display: block;
-      }
+      .nav-menu.desktop { display: none; }
+      .nav-menu.mobile { display: none; }
+      .nav-menu.mobile.active { display: flex; }
+      .hamburger { display: block; }
     }
     @media (min-width: 641px) {
-      .nav-menu.desktop {
-        display: flex;
-        flex-direction: row;
-      }
-      .nav-menu.mobile {
-        display: none;
-      }
-      .hamburger {
-        display: none;
-      }
+      .nav-menu.desktop { display: flex; flex-direction: row; }
+      .nav-menu.mobile { display: none; }
+      .hamburger { display: none; }
     }
+
     .price-table {
       border-collapse: separate;
       border-spacing: 0 0.5rem;
@@ -82,9 +70,7 @@
       text-align: left;
       font-weight: 600;
     }
-    .price-table td:last-child {
-      text-align: right;
-    }
+    .price-table td:last-child { text-align: right; }
     .total-row {
       background-color: #3b82f6;
       font-weight: 700;
@@ -92,49 +78,72 @@
     }
   </style>
 </head>
+
 <body class="bg-gray-900 text-white">
   <div id="root"></div>
 
   <script type="text/babel">
     function Checkout() {
+      const STARTER_KIT = {
+        id: 1,
+        name: 'Anti-Spy Screenprotector Starter Kit',
+        price: 19.99 // incl. VAT
+      };
+
       const [language, setLanguage] = React.useState('en');
       const [menuOpen, setMenuOpen] = React.useState(false);
-const [cartItems, setCartItems] = React.useState(() => {
-  const savedCart = localStorage.getItem('cartItems');
-  return savedCart ? JSON.parse(savedCart) : [];
-});
       const [selectedPayment, setSelectedPayment] = React.useState('paypal');
       const [cardDetails, setCardDetails] = React.useState({ number: '', expiry: '', cvc: '' });
 
-      // Taal wisselen
-      const changeLanguage = (lang) => {
-        setLanguage(lang);
+      // ✅ Alleen starterskit toestaan + prijs altijd corrigeren
+      const sanitizeCart = (items) => {
+        if (!Array.isArray(items)) return [];
+        return items
+          .map((it) => ({
+            id: STARTER_KIT.id,
+            name: STARTER_KIT.name,
+            price: STARTER_KIT.price,
+            quantity: Math.max(0, parseInt(it.quantity || 0, 10))
+          }))
+          .filter((it) => it.quantity > 0);
       };
+
+      const [cartItems, setCartItems] = React.useState(() => {
+        const savedCart = localStorage.getItem('cartItems');
+        const parsed = savedCart ? JSON.parse(savedCart) : [];
+        const cleaned = sanitizeCart(parsed);
+        localStorage.setItem('cartItems', JSON.stringify(cleaned));
+        return cleaned;
+      });
+
+      // Taal wisselen
+      const changeLanguage = (lang) => setLanguage(lang);
 
       // Toggle menu
-      const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-      };
+      const toggleMenu = () => setMenuOpen(!menuOpen);
 
-      // Aantal aanpassen
+      // ✅ Aantal aanpassen (en direct correcte localStorage update)
       const updateQuantity = (id, delta) => {
-        setCartItems(prevItems =>
-          prevItems.map(item =>
-            item.id === id ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item
-          ).filter(item => item.quantity > 0)
-        );
-        localStorage.setItem('cartItems', JSON.stringify(
-          cartItems.map(item =>
-            item.id === id ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item
-          ).filter(item => item.quantity > 0)
-        ));
+        setCartItems((prevItems) => {
+          const next = prevItems
+            .map((item) =>
+              item.id === id
+                ? { ...item, quantity: Math.max(0, item.quantity + delta) }
+                : item
+            )
+            .filter((item) => item.quantity > 0);
+
+          localStorage.setItem('cartItems', JSON.stringify(next));
+          localStorage.setItem('cartCount', String(next.reduce((t, i) => t + i.quantity, 0)));
+          return next;
+        });
       };
 
-      // Bereken totaal en BTW (21%, prijzen zijn inclusief BTW)
+      // ✅ Bereken totaal en BTW (21%, prijzen zijn inclusief BTW)
       const taxRate = 0.21;
-      const subtotal = cartItems.reduce((total, item) => total + (item.price / (1 + taxRate)) * item.quantity, 0);
-      const tax = cartItems.reduce((total, item) => total + (item.price - (item.price / (1 + taxRate))) * item.quantity, 0);
-      const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+      const totalIncl = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const subtotalExcl = totalIncl / (1 + taxRate);
+      const vatAmount = totalIncl - subtotalExcl;
 
       // Vertaalteksten
       const translations = {
@@ -164,12 +173,13 @@ const [cartItems, setCartItems] = React.useState(() => {
           subtotal: 'Subtotal (excl. VAT)',
           tax: 'VAT (21%)',
           total: 'Total (incl. VAT)',
-          freeShipping: 'Shipping',
+          shipping: 'Shipping',
           invoiceNote: 'Payment by invoice must be settled within 30 days.',
           cardNumber: 'Card Number',
           expiryDate: 'Expiry Date (MM/YY)',
           cvc: 'CVC',
           payNow: 'Pay Now',
+          emptyCart: 'Your cart is empty. Go back to the shop to add the Starter Kit.'
         },
         nl: {
           title: 'Afrekenen',
@@ -197,12 +207,13 @@ const [cartItems, setCartItems] = React.useState(() => {
           subtotal: 'Subtotaal (excl. BTW)',
           tax: 'BTW (21%)',
           total: 'Totaal (incl. BTW)',
-          freeShipping: 'Verzending',
+          shipping: 'Verzending',
           invoiceNote: 'Betaling via factuur moet binnen 30 dagen worden voldaan.',
           cardNumber: 'Kaartnummer',
           expiryDate: 'Vervaldatum (MM/JJ)',
           cvc: 'CVC',
           payNow: 'Betaal nu',
+          emptyCart: 'Je winkelwagen is leeg. Ga terug naar de shop om de Starters-kit toe te voegen.'
         },
         fr: {
           title: 'Paiement',
@@ -230,12 +241,13 @@ const [cartItems, setCartItems] = React.useState(() => {
           subtotal: 'Sous-total (hors TVA)',
           tax: 'TVA (21%)',
           total: 'Total (incl. TVA)',
-          freeShipping: 'Livraison',
+          shipping: 'Livraison',
           invoiceNote: 'Le paiement par facture doit être réglé dans les 30 jours.',
           cardNumber: 'Numéro de carte',
           expiryDate: 'Date d’expiration (MM/AA)',
           cvc: 'CVC',
           payNow: 'Payer maintenant',
+          emptyCart: 'Votre panier est vide. Retournez à la boutique pour ajouter le kit.'
         },
         es: {
           title: 'Pago',
@@ -263,12 +275,13 @@ const [cartItems, setCartItems] = React.useState(() => {
           subtotal: 'Subtotal (sin IVA)',
           tax: 'IVA (21%)',
           total: 'Total (incl. IVA)',
-          freeShipping: 'Envío',
+          shipping: 'Envío',
           invoiceNote: 'El pago por factura debe realizarse dentro de 30 días.',
           cardNumber: 'Número de tarjeta',
           expiryDate: 'Fecha de vencimiento (MM/AA)',
           cvc: 'CVC',
           payNow: 'Pagar ahora',
+          emptyCart: 'Tu carrito está vacío. Vuelve a la tienda para añadir el kit.'
         },
         de: {
           title: 'Kasse',
@@ -296,16 +309,16 @@ const [cartItems, setCartItems] = React.useState(() => {
           subtotal: 'Zwischensumme (exkl. MwSt.)',
           tax: 'MwSt. (21%)',
           total: 'Gesamt (inkl. MwSt.)',
-          freeShipping: 'Versand',
+          shipping: 'Versand',
           invoiceNote: 'Die Zahlung per Rechnung muss innerhalb von 30 Tagen erfolgen.',
           cardNumber: 'Kartennummer',
           expiryDate: 'Ablaufdatum (MM/JJ)',
           cvc: 'CVC',
           payNow: 'Jetzt bezahlen',
+          emptyCart: 'Ihr Warenkorb ist leer. Gehen Sie zurück zum Shop, um das Starter-Kit hinzuzufügen.'
         },
       };
 
-      // iPhone-modellen van 11 tot 16 (juni 2025 als meest recent)
       const iPhoneModels = [
         'iPhone 11', 'iPhone 11 Pro', 'iPhone 11 Pro Max',
         'iPhone 12', 'iPhone 12 Mini', 'iPhone 12 Pro', 'iPhone 12 Pro Max',
@@ -318,15 +331,32 @@ const [cartItems, setCartItems] = React.useState(() => {
       // Simuleer betaling
       const handlePayment = (e) => {
         e.preventDefault();
+
+        // safety: altijd sanitized cart gebruiken
+        const cleaned = sanitizeCart(cartItems);
+        const finalTotal = cleaned.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+        if (finalTotal <= 0) {
+          alert(language === 'nl' ? 'Je winkelwagen is leeg.' : 'Your cart is empty.');
+          return;
+        }
+
         const email = document.querySelector('input[type="email"]').value;
-        if (selectedPayment === 'creditcard' && cardDetails.number && cardDetails.expiry && cardDetails.cvc) {
-          alert(`Betaling van €${total.toFixed(2)} met creditcard succesvol! Geld wordt overgemaakt naar jouw rekening.`);
+
+        if (selectedPayment === 'creditcard') {
+          if (!cardDetails.number || !cardDetails.expiry || !cardDetails.cvc) {
+            alert(language === 'nl' ? 'Vul je creditcardgegevens in.' : 'Please enter your credit card details.');
+            return;
+          }
+          alert(`Betaling van €${finalTotal.toFixed(2)} met creditcard succesvol!`);
         } else if (selectedPayment === 'paypal') {
-          alert(`Betaling van €${total.toFixed(2)} via PayPal succesvol! Geld wordt overgemaakt naar jouw PayPal-account.`);
+          alert(`Betaling van €${finalTotal.toFixed(2)} via PayPal succesvol!`);
         } else if (selectedPayment === 'invoice') {
-          alert(`Factuur van €${total.toFixed(2)} is verzonden naar ${email}. Betaling dient binnen 30 dagen te geschieden.`);
+          alert(`Factuur van €${finalTotal.toFixed(2)} is verzonden naar ${email}. Betaling dient binnen 30 dagen te geschieden.`);
         }
       };
+
+      const cartQty = cartItems.reduce((t, i) => t + i.quantity, 0);
 
       return (
         <div className="min-h-screen">
@@ -334,26 +364,30 @@ const [cartItems, setCartItems] = React.useState(() => {
           <header className="bg-gray-800 p-4 sticky top-0 z-20 shadow-lg">
             <div className="container mx-auto flex justify-between items-center">
               <h1 className="text-2xl md:text-3xl font-bold text-blue-400">SecuScreen</h1>
+
               <div className="flex items-center space-x-4 md:space-x-6">
                 <button className="hamburger md:hidden text-white focus:outline-none" onClick={toggleMenu}>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                   </svg>
                 </button>
-  <nav className="nav-menu desktop md:flex md:space-x-6">
-  <a href="index.html" className="hover:text-blue-400 transition">Home</a>
-  <a href="index.html#product" className="hover:text-blue-400 transition">Product</a>
-  <a href="index.html#testimonials" className="hover:text-blue-400 transition">Reviews</a>
-  <a href="index.html#faq" className="hover:text-blue-400 transition">FAQ</a>
-  <a href="index.html#contact" className="hover:text-blue-400 transition">Contact</a>
-</nav>
-<nav className={`nav-menu mobile ${menuOpen ? 'active' : ''}`}>
-  <a href="index.html" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Home</a>
-  <a href="index.html#product" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Product</a>
-  <a href="index.html#testimonials" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Reviews</a>
-  <a href="index.html#faq" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>FAQ</a>
-  <a href="index.html#contact" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Contact</a>
-</nav>
+
+                <nav className="nav-menu desktop md:flex md:space-x-6">
+                  <a href="index.html" className="hover:text-blue-400 transition">Home</a>
+                  <a href="index.html#product" className="hover:text-blue-400 transition">Product</a>
+                  <a href="index.html#testimonials" className="hover:text-blue-400 transition">Reviews</a>
+                  <a href="index.html#faq" className="hover:text-blue-400 transition">FAQ</a>
+                  <a href="index.html#contact" className="hover:text-blue-400 transition">Contact</a>
+                </nav>
+
+                <nav className={`nav-menu mobile ${menuOpen ? 'active' : ''}`}>
+                  <a href="index.html" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Home</a>
+                  <a href="index.html#product" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Product</a>
+                  <a href="index.html#testimonials" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Reviews</a>
+                  <a href="index.html#faq" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>FAQ</a>
+                  <a href="index.html#contact" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>Contact</a>
+                </nav>
+
                 <select
                   value={language}
                   onChange={(e) => changeLanguage(e.target.value)}
@@ -365,8 +399,9 @@ const [cartItems, setCartItems] = React.useState(() => {
                   <option value="es">ES</option>
                   <option value="de">DE</option>
                 </select>
+
                 <span className="relative">
-                  🛒 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-sm">{cartItems.reduce((total, item) => total + item.quantity, 0)}</span>
+                  🛒 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-sm">{cartQty}</span>
                 </span>
               </div>
             </div>
@@ -376,51 +411,81 @@ const [cartItems, setCartItems] = React.useState(() => {
           <section className="py-8 bg-gray-800 fade-in">
             <div className="container mx-auto px-4 max-w-lg">
               <h2 className="text-2xl font-bold mb-4 text-blue-400">{translations[language].cartSection}</h2>
-              {cartItems.map(item => (
-                <div key={item.id} className="flex justify-between items-center bg-gray-700 p-4 mb-2 rounded-lg">
-                  <span>{item.name} - €{item.price.toFixed(2)} x {item.quantity} (incl. BTW)</span>
-                  <div>
-                    <button onClick={() => updateQuantity(item.id, -1)} className="bg-red-500 text-white px-2 py-1 rounded mr-2 hover:bg-red-600 transition">{translations[language].removeItem}</button>
-                    <button onClick={() => updateQuantity(item.id, 1)} className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">{translations[language].addItem}</button>
+
+              {cartItems.length === 0 ? (
+                <div className="bg-gray-700 p-4 rounded-lg">
+                  <p className="text-sm text-gray-200">{translations[language].emptyCart}</p>
+                  <div className="mt-4">
+                    <a href="index.html#product" className="inline-block bg-blue-500 text-white px-5 py-2 rounded-full hover:bg-blue-600 transition">
+                      {translations[language].backLink}
+                    </a>
                   </div>
                 </div>
-              ))}
-              <div className="mt-6">
-                <table className="price-table w-full">
-                  <tbody>
-                    <tr>
-                      <td>{translations[language].subtotal}</td>
-                      <td>€{subtotal.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                      <td>{translations[language].tax}</td>
-                      <td>€{tax.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                      <td>{translations[language].freeShipping}</td>
-                      <td>FREE</td>
-                    </tr>
-                    <tr className="total-row">
-                      <td>{translations[language].total}</td>
-                      <td>€{total.toFixed(2)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                {selectedPayment === 'invoice' && (
-                  <p className="text-sm text-gray-400 mt-2">{translations[language].invoiceNote}</p>
-                )}
-                <label className="block text-sm font-medium mb-2 mt-4">{translations[language].discountCode}</label>
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    placeholder="Enter code"
-                  />
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                    {translations[language].applyButton}
-                  </button>
-                </div>
-              </div>
+              ) : (
+                <>
+                  {cartItems.map(item => (
+                    <div key={item.id} className="flex justify-between items-center bg-gray-700 p-4 mb-2 rounded-lg">
+                      <span>{item.name} - €{item.price.toFixed(2)} x {item.quantity} (incl. BTW)</span>
+                      <div>
+                        <button
+                          onClick={() => updateQuantity(item.id, -1)}
+                          className="bg-red-500 text-white px-2 py-1 rounded mr-2 hover:bg-red-600 transition"
+                        >
+                          {translations[language].removeItem}
+                        </button>
+                        <button
+                          onClick={() => updateQuantity(item.id, 1)}
+                          className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
+                        >
+                          {translations[language].addItem}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="mt-6">
+                    <table className="price-table w-full">
+                      <tbody>
+                        <tr>
+                          <td>{translations[language].subtotal}</td>
+                          <td>€{subtotalExcl.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                          <td>{translations[language].tax}</td>
+                          <td>€{vatAmount.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                          <td>{translations[language].shipping}</td>
+                          <td>€0.00</td>
+                        </tr>
+                        <tr className="total-row">
+                          <td>{translations[language].total}</td>
+                          <td>€{totalIncl.toFixed(2)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    {selectedPayment === 'invoice' && (
+                      <p className="text-sm text-gray-400 mt-2">{translations[language].invoiceNote}</p>
+                    )}
+
+                    <label className="block text-sm font-medium mb-2 mt-4">{translations[language].discountCode}</label>
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
+                        placeholder="Enter code"
+                      />
+                      <button
+                        type="button"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                      >
+                        {translations[language].applyButton}
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </section>
 
@@ -429,73 +494,49 @@ const [cartItems, setCartItems] = React.useState(() => {
             <div className="container mx-auto px-4 max-w-lg">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-blue-400">{translations[language].title}</h2>
               <p className="text-lg mb-8 text-center">{translations[language].subtitle}</p>
+
               <form className="space-y-6" onSubmit={handlePayment}>
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].nameLabel}</label>
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    required
-                  />
+                  <input type="text" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].emailLabel}</label>
-                  <input
-                    type="email"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    required
-                  />
+                  <input type="email" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].phoneLabel}</label>
-                  <input
-                    type="tel"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    required
-                  />
+                  <input type="tel" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].streetLabel}</label>
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    required
-                  />
+                  <input type="text" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                 </div>
+
                 <div className="flex space-x-4">
                   <div className="w-1/2">
                     <label className="block text-sm font-medium mb-2">{translations[language].houseNumberLabel}</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                      required
-                    />
+                    <input type="text" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                   </div>
                   <div className="w-1/2">
                     <label className="block text-sm font-medium mb-2">{translations[language].postalCodeLabel}</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                      required
-                    />
+                    <input type="text" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                   </div>
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].cityLabel}</label>
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    required
-                  />
+                  <input type="text" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].countryLabel}</label>
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none"
-                    required
-                  />
+                  <input type="text" className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none" required />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].phoneModelLabel}</label>
                   <select className="w-full p-3 bg-gray-700 rounded-md border-none focus:outline-none">
@@ -504,6 +545,7 @@ const [cartItems, setCartItems] = React.useState(() => {
                     ))}
                   </select>
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-2">{translations[language].paymentLabel}</label>
                   <select
@@ -557,27 +599,18 @@ const [cartItems, setCartItems] = React.useState(() => {
                     </div>
                   </div>
                 )}
-                {selectedPayment === 'paypal' && (
-                  <div className="text-center">
-                    <button
-                      type="submit"
-                      className="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition pulse"
-                    >
-                      {translations[language].payNow} with PayPal
-                    </button>
-                  </div>
-                )}
-                {selectedPayment === 'invoice' && (
-                  <p className="text-sm text-gray-400"> </p>
-                )}
 
+                {/* 1 hoofdknop is genoeg; tekst toont bedrag zodat het altijd klopt */}
                 <button
                   type="submit"
-                  className="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition pulse"
+                  disabled={totalIncl <= 0}
+                  className={`w-full px-6 py-3 rounded-full font-semibold transition pulse
+                    ${totalIncl <= 0 ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
                 >
-                  {translations[language].submitButton}
+                  {translations[language].submitButton} — €{totalIncl.toFixed(2)}
                 </button>
               </form>
+
               <div className="mt-6 text-center">
                 <a href="index.html" className="text-blue-400 hover:underline hover-scale">
                   {translations[language].backLink}
