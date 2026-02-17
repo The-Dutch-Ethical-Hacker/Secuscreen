@@ -48,9 +48,8 @@
       flex-direction: column;
       z-index: 10;
     }
-    .nav-menu.mobile.active {
-      display: flex;
-    }
+    .nav-menu.mobile.active { display: flex; }
+
     @media (max-width: 640px) {
       .nav-menu.desktop { display: none; }
       .nav-menu.mobile { display: none; }
@@ -105,10 +104,16 @@
 
   <script type="text/babel">
     function App() {
+      const STARTER_KIT = {
+        id: 1,
+        name: 'Anti-Spy Screenprotector Starter Kit',
+        price: 19.99
+      };
+
       const [cartCount, setCartCount] = React.useState(0);
       const [showCookieBanner, setShowCookieBanner] = React.useState(true);
       const [language, setLanguage] = React.useState('en');
-      const [timeLeft, setTimeLeft] = React.useState(2 * 60 * 60); // 2 uur in seconden
+      const [timeLeft, setTimeLeft] = React.useState(2 * 60 * 60);
       const [menuOpen, setMenuOpen] = React.useState(false);
       const [showCookieSettings, setShowCookieSettings] = React.useState(false);
       const [cookieConsent, setCookieConsent] = React.useState({
@@ -118,10 +123,26 @@
         marketing: false
       });
 
-      // (Optioneel) laad cartCount uit localStorage
+      // ✅ Cart count laden (en meteen "sanity check" op cartItems)
       React.useEffect(() => {
-        const savedCount = parseInt(localStorage.getItem('cartCount') || '0', 10);
-        if (!Number.isNaN(savedCount)) setCartCount(savedCount);
+        const savedItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        // Forceer alleen starterskit + juiste prijs
+        const cleaned = Array.isArray(savedItems)
+          ? savedItems
+              .filter(it => it && typeof it === 'object')
+              .map(it => ({
+                id: STARTER_KIT.id,
+                name: STARTER_KIT.name,
+                price: STARTER_KIT.price,
+                quantity: Math.max(0, parseInt(it.quantity || 0, 10))
+              }))
+              .filter(it => it.quantity > 0)
+          : [];
+
+        localStorage.setItem('cartItems', JSON.stringify(cleaned));
+        const count = cleaned.reduce((t, i) => t + i.quantity, 0);
+        localStorage.setItem('cartCount', String(count));
+        setCartCount(count);
       }, []);
 
       // Countdown-timer
@@ -132,17 +153,9 @@
         return () => clearInterval(timer);
       }, []);
 
-      // Cookiebanner accepteren
-      const acceptCookies = () => {
-        setShowCookieBanner(false);
-      };
+      const acceptCookies = () => setShowCookieBanner(false);
+      const openCookieSettings = () => setShowCookieSettings(true);
 
-      // Cookie-instellingen openen
-      const openCookieSettings = () => {
-        setShowCookieSettings(true);
-      };
-
-      // Cookie-instellingen opslaan
       const saveCookieSettings = () => {
         setShowCookieBanner(false);
         setShowCookieSettings(false);
@@ -156,7 +169,6 @@
         );
       };
 
-      // Cookie-instellingen bijwerken
       const updateCookieConsent = (category) => {
         setCookieConsent(prev => ({
           ...prev,
@@ -164,7 +176,6 @@
         }));
       };
 
-      // Tijd formatteren
       const formatTime = (seconds) => {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
@@ -172,42 +183,53 @@
         return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       };
 
-      // ✅ Alleen STARTERSKIT toevoegen (single deal + abonnement verwijderd)
+      // ✅ Alleen starterskit toevoegen + quantities netjes stapelen
       const addToCart = () => {
-        const newCartCount = cartCount + 1;
-        setCartCount(newCartCount);
-        localStorage.setItem('cartCount', newCartCount);
-
-        // Voeg items toe aan localStorage als array
-        const selectedProduct = {
-          id: 1,
-          name: 'Anti-Spy Screenprotector Starter Kit',
-          price: 19.99,
-          quantity: 1
-        };
-
         const existing = JSON.parse(localStorage.getItem('cartItems') || '[]');
-        const updated = Array.isArray(existing) ? [...existing, selectedProduct] : [selectedProduct];
+        const safeExisting = Array.isArray(existing) ? existing : [];
+
+        const idx = safeExisting.findIndex(it => it && it.id === STARTER_KIT.id);
+        let updated = [];
+
+        if (idx >= 0) {
+          updated = safeExisting.map((it, i) => {
+            if (i !== idx) return it;
+            const q = Math.max(0, parseInt(it.quantity || 0, 10)) + 1;
+            return { id: STARTER_KIT.id, name: STARTER_KIT.name, price: STARTER_KIT.price, quantity: q };
+          });
+        } else {
+          updated = [
+            ...safeExisting.filter(it => it && typeof it === 'object'),
+            { id: STARTER_KIT.id, name: STARTER_KIT.name, price: STARTER_KIT.price, quantity: 1 }
+          ];
+        }
+
+        // Forceer weer clean
+        updated = updated
+          .map(it => ({
+            id: STARTER_KIT.id,
+            name: STARTER_KIT.name,
+            price: STARTER_KIT.price,
+            quantity: Math.max(0, parseInt(it.quantity || 0, 10))
+          }))
+          .filter(it => it.quantity > 0);
+
         localStorage.setItem('cartItems', JSON.stringify(updated));
+        const newCount = updated.reduce((t, i) => t + i.quantity, 0);
+        localStorage.setItem('cartCount', String(newCount));
+        setCartCount(newCount);
       };
 
-      // Toggle menu
-      const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-      };
+      const toggleMenu = () => setMenuOpen(!menuOpen);
+      const changeLanguage = (lang) => setLanguage(lang);
 
-      // Taal wisselen
-      const changeLanguage = (lang) => {
-        setLanguage(lang);
-      };
-
-      // Vertaalteksten (single deal + abonnement teksten verwijderd)
+      // ✅ Teksten bijgewerkt: iPhone 11 t/m 17
       const translations = {
         en: {
           title: 'Protect Your Privacy!',
           subtitle: 'Secure your screen with unrivaled 180° privacy!',
           productTitle: 'Anti-Spy Screenprotector Starter Kit',
-          productDescription: 'Premium anti-spy screenprotectors and lens protector for iPhone 11 to 16 (including Pro/Max/Plus). Protect your privacy with scratch-resistant glass and easy installation.',
+          productDescription: 'Premium anti-spy screenprotectors and lens protector for iPhone 11 to 17 (including Pro/Max/Plus). Protect your privacy with scratch-resistant glass and easy installation.',
           productBenefits: [
             '180° privacy protection: only you see your screen.',
             'Reduces blue light: less eye strain.',
@@ -232,14 +254,14 @@
           uspPrivacy: 'Ultimate Privacy',
           uspPrivacyText: '180° privacy protection keeps your screen hidden.',
           uspCompatibility: 'For All iPhones',
-          uspCompatibilityText: 'Compatible with iPhone 11 to 16, including Pro/Max/Plus.',
+          uspCompatibilityText: 'Compatible with iPhone 11 to 17, including Pro/Max/Plus.',
           uspInstallation: 'Easy Installation',
           uspInstallationText: 'Includes kit and video for bubble-free placement.',
           faqTitle: 'Frequently Asked Questions',
           faqDelivery: 'How fast is the delivery?',
           faqDeliveryText: 'We offer fast delivery and always free shipping.',
           faqCompatibility: 'Which iPhones are compatible?',
-          faqCompatibilityText: 'Our starter kit fits iPhone 11 to 16, including Pro/Max/Plus.',
+          faqCompatibilityText: 'Our starter kit fits iPhone 11 to 17, including Pro/Max/Plus.',
           faqReturn: 'What is the return policy?',
           faqReturnText: '30-day return period. Contact us.',
           contactTitle: 'Contact Us',
@@ -260,7 +282,7 @@
           title: 'Bescherm je privacy!',
           subtitle: 'Beveilig je scherm met ongeëvenaarde 180° privacy!',
           productTitle: 'Anti-Spy Screenprotector Starters-kit',
-          productDescription: 'Premium anti-spy screenprotectors en lensprotector voor iPhone 11 t/m 16 (inclusief Pro/Max/Plus). Bescherm je privacy met krasbestendig glas en eenvoudige installatie.',
+          productDescription: 'Premium anti-spy screenprotectors en lensprotector voor iPhone 11 t/m 17 (inclusief Pro/Max/Plus). Bescherm je privacy met krasbestendig glas en eenvoudige installatie.',
           productBenefits: [
             '180° privacybescherming: alleen jij ziet je scherm.',
             'Reduceert blauw licht: minder vermoeide ogen.',
@@ -285,14 +307,14 @@
           uspPrivacy: 'Ultieme privacy',
           uspPrivacyText: '180° privacybescherming houdt je scherm verborgen.',
           uspCompatibility: 'Voor alle iPhones',
-          uspCompatibilityText: 'Compatibel met iPhone 11 t/m 16, inclusief Pro/Max/Plus.',
+          uspCompatibilityText: 'Compatibel met iPhone 11 t/m 17, inclusief Pro/Max/Plus.',
           uspInstallation: 'Makkelijke installatie',
           uspInstallationText: 'Inclusief kit en video voor een bubbelvrije plaatsing.',
           faqTitle: 'Veelgestelde vragen',
           faqDelivery: 'Hoe snel is de levering?',
           faqDeliveryText: 'Wij bieden snelle levering en altijd gratis verzending.',
           faqCompatibility: 'Voor welke iPhones is dit geschikt?',
-          faqCompatibilityText: 'Onze starters-kit past op iPhone 11 t/m 16, inclusief Pro/Max/Plus.',
+          faqCompatibilityText: 'Onze starters-kit past op iPhone 11 t/m 17, inclusief Pro/Max/Plus.',
           faqReturn: 'Wat is het retourbeleid?',
           faqReturnText: '30 dagen bedenktijd. Neem contact op.',
           contactTitle: 'Neem contact op',
@@ -313,7 +335,7 @@
           title: 'Protégez votre vie privée !',
           subtitle: 'Sécurisez votre écran avec une confidentialité inégalée à 180° !',
           productTitle: 'Kit de Démarrage de Protecteurs d’Écran Anti-Espion',
-          productDescription: 'Protecteurs d’écran anti-espion premium et protecteur d’objectif pour iPhone 11 à 16 (y compris Pro/Max/Plus). Protégez votre vie privée avec un verre résistant aux rayures et une installation facile.',
+          productDescription: 'Protecteurs d’écran anti-espion premium et protecteur d’objectif pour iPhone 11 à 17 (y compris Pro/Max/Plus). Protégez votre vie privée avec un verre résistant aux rayures et une installation facile.',
           productBenefits: [
             'Protection de confidentialité à 180° : seul vous voyez votre écran.',
             'Réduit la lumière bleue : moins de fatigue oculaire.',
@@ -338,14 +360,14 @@
           uspPrivacy: 'Confidentialité ultime',
           uspPrivacyText: 'Protection de confidentialité à 180° garde votre écran caché.',
           uspCompatibility: 'Pour tous les iPhones',
-          uspCompatibilityText: 'Compatible avec iPhone 11 à 16, y compris Pro/Max/Plus.',
+          uspCompatibilityText: 'Compatible avec iPhone 11 à 17, y compris Pro/Max/Plus.',
           uspInstallation: 'Installation facile',
           uspInstallationText: 'Inclut un kit et une vidéo pour une pose sans bulles.',
           faqTitle: 'Questions fréquentes',
           faqDelivery: 'Quelle est la rapidité de livraison ?',
           faqDeliveryText: 'Nous offrons une livraison rapide et toujours gratuite.',
           faqCompatibility: 'Pour quels iPhones est-ce compatible ?',
-          faqCompatibilityText: 'Notre kit de démarrage convient aux iPhone 11 à 16, y compris Pro/Max/Plus.',
+          faqCompatibilityText: 'Notre kit de démarrage convient aux iPhone 11 à 17, y compris Pro/Max/Plus.',
           faqReturn: 'Quelle est la politique de retour ?',
           faqReturnText: 'Période de retour de 30 jours. Contactez-nous à secusreenshop@gmail.com.',
           contactTitle: 'Contactez-nous',
@@ -366,7 +388,7 @@
           title: '¡Protege tu privacidad!',
           subtitle: '¡Asegura tu pantalla con una privacidad inigualable de 180°!',
           productTitle: 'Kit de Inicio de Protectores de Pantalla Anti-Espías',
-          productDescription: 'Protectores de pantalla anti-espías premium y protector de lente para iPhone 11 a 16 (incluyendo Pro/Max/Plus). Protege tu privacidad con vidrio resistente a arañazos e instalación fácil.',
+          productDescription: 'Protectores de pantalla anti-espías premium y protector de lente para iPhone 11 a 17 (incluyendo Pro/Max/Plus). Protege tu privacidad con vidrio resistente a arañazos e instalación fácil.',
           productBenefits: [
             'Protección de privacidad de 180°: solo tú ves tu pantalla.',
             'Reduce la luz azul: menos fatiga ocular.',
@@ -391,14 +413,14 @@
           uspPrivacy: 'Privacidad definitiva',
           uspPrivacyText: 'Protección de privacidad de 180° mantiene tu pantalla oculta.',
           uspCompatibility: 'Para todos los iPhones',
-          uspCompatibilityText: 'Compatible con iPhone 11 a 16, incluyendo Pro/Max/Plus.',
+          uspCompatibilityText: 'Compatible con iPhone 11 a 17, incluyendo Pro/Max/Plus.',
           uspInstallation: 'Instalación fácil',
           uspInstallationText: 'Incluye kit y video para una colocación sin burbujas.',
           faqTitle: 'Preguntas frecuentes',
           faqDelivery: '¿Qué tan rápida es la entrega?',
           faqDeliveryText: 'Ofrecemos entrega rápida y siempre gratuita.',
           faqCompatibility: '¿Para qué iPhones es compatible?',
-          faqCompatibilityText: 'Nuestro kit de inicio es compatible con iPhone 11 a 16, incluyendo Pro/Max/Plus.',
+          faqCompatibilityText: 'Nuestro kit de inicio es compatible con iPhone 11 a 17, incluyendo Pro/Max/Plus.',
           faqReturn: '¿Cuál es la política de devoluciones?',
           faqReturnText: 'Período de devolución de 30 días. Contáctanos en secusreenshop@gmail.com.',
           contactTitle: 'Contáctanos',
@@ -419,7 +441,7 @@
           title: 'Schützen Sie Ihre Privatsphäre!',
           subtitle: 'Sichern Sie Ihren Bildschirm mit unübertroffener 180°-Privatsphäre!',
           productTitle: 'Anti-Spionage-Displayschutz Starter-Kit',
-          productDescription: 'Premium Anti-Spionage-Displayschutzfolien und Linsenschutz für iPhone 11 bis 16 (einschließlich Pro/Max/Plus). Schützen Sie Ihre Privatsphäre mit kratzfestem Glas und einfacher Installation.',
+          productDescription: 'Premium Anti-Spionage-Displayschutzfolien und Linsenschutz für iPhone 11 bis 17 (einschließlich Pro/Max/Plus). Schützen Sie Ihre Privatsphäre mit kratzfestem Glas und einfacher Installation.',
           productBenefits: [
             '180°-Datenschutz: Nur Sie sehen Ihren Bildschirm.',
             'Reduziert blaues Licht: Weniger Augenbelastung.',
@@ -444,14 +466,14 @@
           uspPrivacy: 'Ultimativer Datenschutz',
           uspPrivacyText: '180°-Datenschutz hält Ihren Bildschirm verborgen.',
           uspCompatibility: 'Für alle iPhones',
-          uspCompatibilityText: 'Kompatibel mit iPhone 11 bis 16, einschließlich Pro/Max/Plus.',
+          uspCompatibilityText: 'Kompatibel mit iPhone 11 bis 17, einschließlich Pro/Max/Plus.',
           uspInstallation: 'Einfache Installation',
           uspInstallationText: 'Inklusive Kit und Video für eine blasenfreie Anbringung.',
           faqTitle: 'Häufig gestellte Fragen',
           faqDelivery: 'Wie schnell ist die Lieferung?',
           faqDeliveryText: 'Wir bieten schnelle Lieferung und immer kostenlosen Versand.',
           faqCompatibility: 'Für welche iPhones ist es geeignet?',
-          faqCompatibilityText: 'Unser Starter-Kit passt auf iPhone 11 bis 16, einschließlich Pro/Max/Plus.',
+          faqCompatibilityText: 'Unser Starter-Kit passt auf iPhone 11 bis 17, einschließlich Pro/Max/Plus.',
           faqReturn: 'Wie lautet die Rückgabepolitik?',
           faqReturnText: '30-tägige Rückgabefrist. Kontaktieren Sie uns unter secusreenshop@gmail.com.',
           contactTitle: 'Kontaktieren Sie uns',
@@ -512,17 +534,10 @@
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].necessaryCookies}</span>
-                      <input
-                        type="checkbox"
-                        checked={cookieConsent.necessary}
-                        onChange={() => updateCookieConsent('necessary')}
-                        disabled
-                        className="ml-2"
-                      />
+                      <input type="checkbox" checked={cookieConsent.necessary} disabled className="ml-2" />
                     </label>
                     <p className="text-xs text-gray-400">{translations[language].necessaryDesc}</p>
                   </div>
-
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].analyticsCookies}</span>
@@ -535,7 +550,6 @@
                     </label>
                     <p className="text-xs text-gray-400">{translations[language].analyticsDesc}</p>
                   </div>
-
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].functionalCookies}</span>
@@ -548,7 +562,6 @@
                     </label>
                     <p className="text-xs text-gray-400">{translations[language].functionalDesc}</p>
                   </div>
-
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].marketingCookies}</span>
@@ -627,11 +640,7 @@
               <p className="text-lg md:text-2xl mb-6 max-w-2xl mx-auto">{translations[language].subtitle}</p>
 
               <div className="relative w-full max-w-xs md:max-w-lg mx-auto mb-8">
-                <img
-                  src="Logo-screen.png"
-                  alt="SecuScreen Logo"
-                  className="w-full h-auto rounded-lg shadow-2xl banner-image hover-scale"
-                />
+                <img src="Logo-screen.png" alt="SecuScreen Logo" className="w-full h-auto rounded-lg shadow-2xl banner-image hover-scale" />
               </div>
 
               <a href="#product" className="inline-block bg-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition hover-scale">
@@ -640,7 +649,7 @@
             </div>
           </section>
 
-          {/* Product-sectie (starterskit) */}
+          {/* Product-sectie */}
           <section id="product" className="py-16 bg-gray-800 fade-in">
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -674,12 +683,14 @@
                       </svg>
                       {language === 'nl' ? '3x Anti-spy screenprotectors' : language === 'en' ? '3x Anti-spy screenprotectors' : language === 'fr' ? '3x Protecteurs d’écran anti-espion' : language === 'es' ? '3x Protectores de pantalla anti-espías' : '3x Anti-Spionage-Displayschutz'}
                     </li>
+
                     <li className="flex items-center">
                       <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
                       </svg>
                       {language === 'nl' ? '1x Lensprotector' : language === 'en' ? '1x Lens protector' : language === 'fr' ? '1x Protecteur d’objectif' : language === 'es' ? '1x Protector de lente' : '1x Linsenschutz'}
                     </li>
+
                     <li className="flex items-center">
                       <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
@@ -707,7 +718,7 @@
             </div>
           </section>
 
-          {/* Testimonials-sectie */}
+          {/* Testimonials */}
           <section id="testimonials" className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4">
               <div className="carousel-container flex space-x-4">
@@ -731,12 +742,11 @@
             </div>
           </section>
 
-          {/* Newsletter-sectie */}
+          {/* Newsletter */}
           <section id="newsletter" className="py-16 bg-gray-800 fade-in">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].newsletterTitle}</h2>
               <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].newsletterSubtitle}</p>
-
               <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
                 <input
                   type="email"
@@ -777,7 +787,7 @@
             </div>
           </section>
 
-          {/* USP-sectie */}
+          {/* USP */}
           <section className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4">
               <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-400">{translations[language].whyUs}</h2>
@@ -801,7 +811,7 @@
             </div>
           </section>
 
-          {/* FAQ-sectie */}
+          {/* FAQ */}
           <section id="faq" className="py-16 bg-gray-800 fade-in">
             <div className="container mx-auto px-4">
               <div className="space-y-6 max-w-2xl mx-auto">
@@ -821,7 +831,7 @@
             </div>
           </section>
 
-          {/* Contact-sectie */}
+          {/* Contact */}
           <section id="contact" className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-blue-400">{translations[language].contactTitle}</h2>
@@ -852,10 +862,8 @@
       );
     }
 
-    // Render de app
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
 </body>
 </html>
-
