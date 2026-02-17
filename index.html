@@ -6,8 +6,9 @@
   <meta name="description" content="Premium anti-spy screenprotectors voor iPhone. Beveilig je scherm en geniet van 180° privacybescherming!">
   <meta name="keywords" content="anti-spy screenprotector iPhone, privacy screen iPhone, iPhone lensprotector, starters-kit">
   <meta name="author" content="SecuScreen.com">
-	<link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <title>SecuScreen - Ultimate Privacy</title>
+
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- React en ReactDOM via CDN -->
@@ -17,6 +18,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body { font-family: 'Poppins', sans-serif; }
     .fade-in { animation: fadeIn 1s ease-in; }
@@ -30,6 +32,7 @@
     .carousel-item { scroll-snap-align: start; }
     .pulse { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
     .nav-menu {
       display: flex;
       transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -49,31 +52,17 @@
       display: flex;
     }
     @media (max-width: 640px) {
-      .nav-menu.desktop {
-        display: none;
-      }
-      .nav-menu.mobile {
-        display: none;
-      }
-      .nav-menu.mobile.active {
-        display: flex;
-      }
-      .hamburger {
-        display: block;
-      }
+      .nav-menu.desktop { display: none; }
+      .nav-menu.mobile { display: none; }
+      .nav-menu.mobile.active { display: flex; }
+      .hamburger { display: block; }
     }
     @media (min-width: 641px) {
-      .nav-menu.desktop {
-        display: flex;
-        flex-direction: row;
-      }
-      .nav-menu.mobile {
-        display: none;
-      }
-      .hamburger {
-        display: none;
-      }
+      .nav-menu.desktop { display: flex; flex-direction: row; }
+      .nav-menu.mobile { display: none; }
+      .hamburger { display: none; }
     }
+
     .cookie-settings {
       display: none;
       position: fixed;
@@ -88,9 +77,8 @@
       width: 90%;
       max-width: 400px;
     }
-    .cookie-settings.active {
-      display: block;
-    }
+    .cookie-settings.active { display: block; }
+
     .overlay {
       display: none;
       position: fixed;
@@ -101,15 +89,14 @@
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 30;
     }
-    .overlay.active {
-      display: block;
-    }
+    .overlay.active { display: block; }
   </style>
 </head>
+
 <body class="bg-gray-900 text-white">
   <div id="root"></div>
-  <div id="overlay" className="overlay"></div>
-  <div id="cookieSettings" className="cookie-settings"></div>
+  <div id="overlay" class="overlay"></div>
+  <div id="cookieSettings" class="cookie-settings"></div>
 
   <!-- Chatbase Script -->
   <script>
@@ -119,7 +106,6 @@
   <script type="text/babel">
     function App() {
       const [cartCount, setCartCount] = React.useState(0);
-      const [showPrivacy, setShowPrivacy] = React.useState(false);
       const [showCookieBanner, setShowCookieBanner] = React.useState(true);
       const [language, setLanguage] = React.useState('en');
       const [timeLeft, setTimeLeft] = React.useState(2 * 60 * 60); // 2 uur in seconden
@@ -132,12 +118,10 @@
         marketing: false
       });
 
-      // Automatische slider (4 seconden)
+      // (Optioneel) laad cartCount uit localStorage
       React.useEffect(() => {
-        const interval = setInterval(() => {
-          setShowPrivacy(prev => !prev);
-        }, 4000);
-        return () => clearInterval(interval);
+        const savedCount = parseInt(localStorage.getItem('cartCount') || '0', 10);
+        if (!Number.isNaN(savedCount)) setCartCount(savedCount);
       }, []);
 
       // Countdown-timer
@@ -163,7 +147,13 @@
         setShowCookieBanner(false);
         setShowCookieSettings(false);
         localStorage.setItem('cookieConsent', JSON.stringify(cookieConsent));
-        alert(language === 'nl' ? 'Cookie-instellingen opgeslagen!' : language === 'en' ? 'Cookie settings saved!' : language === 'fr' ? 'Paramètres des cookies enregistrés !' : language === 'es' ? '¡Configuración de cookies guardada!' : 'Cookie-Einstellungen gespeichert!');
+        alert(
+          language === 'nl' ? 'Cookie-instellingen opgeslagen!' :
+          language === 'en' ? 'Cookie settings saved!' :
+          language === 'fr' ? 'Paramètres des cookies enregistrés !' :
+          language === 'es' ? '¡Configuración de cookies guardada!' :
+          'Cookie-Einstellungen gespeichert!'
+        );
       };
 
       // Cookie-instellingen bijwerken
@@ -182,29 +172,23 @@
         return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       };
 
-const addToCart = () => {
+      // ✅ Alleen STARTERSKIT toevoegen (single deal + abonnement verwijderd)
+      const addToCart = () => {
         const newCartCount = cartCount + 1;
         setCartCount(newCartCount);
         localStorage.setItem('cartCount', newCartCount);
 
         // Voeg items toe aan localStorage als array
-const selectedProduct = { id: 2, name: 'Single Screenprotector Deal', price: 9.99, quantity: 1 };
-localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
-      };
+        const selectedProduct = {
+          id: 1,
+          name: 'Anti-Spy Screenprotector Starter Kit',
+          price: 19.99,
+          quantity: 1
+        };
 
-      // Abonnement kiezen
-      const subscribe = () => {
-        alert(translations[language].subscriptionSelected);
-      };
-
-      // Toggle voor privacy-screen
-      const togglePrivacy = () => {
-        setShowPrivacy(!showPrivacy);
-      };
-
-      // Taal wisselen
-      const changeLanguage = (lang) => {
-        setLanguage(lang);
+        const existing = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const updated = Array.isArray(existing) ? [...existing, selectedProduct] : [selectedProduct];
+        localStorage.setItem('cartItems', JSON.stringify(updated));
       };
 
       // Toggle menu
@@ -212,7 +196,12 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
         setMenuOpen(!menuOpen);
       };
 
-      // Vertaalteksten
+      // Taal wisselen
+      const changeLanguage = (lang) => {
+        setLanguage(lang);
+      };
+
+      // Vertaalteksten (single deal + abonnement teksten verwijderd)
       const translations = {
         en: {
           title: 'Protect Your Privacy!',
@@ -226,18 +215,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             'High touchscreen sensitivity: smooth operation.'
           ],
           productUrgency: 'Offer expires in:',
-          cartAdded: 'Starter kit added to cart!',
           paymentOptions: 'AfterPay available.',
-          subscriptionTitle: 'Unlock Ultimate Convenience with Our Subscription!',
-          subscriptionText: 'Join our exclusive subscription and receive a brand-new Starter Kit every 6 months, delivered straight to your door. Enjoy a fantastic 10% discount, free shipping on every delivery, and hassle-free privacy protection. Pause or cancel anytime via our friendly customer service. Perfect for staying ahead with top-tier screen protection!',
-          subscriptionPrice: 'Only €17.99 / 6 months',
-          subscriptionButton: 'Start Now & Save 10%',
-          subscriptionSelected: 'Subscription activated! You’ll receive a new Starter Kit every 6 months.',
-          singleProtectorTitle: 'Single Screenprotector Deal',
-          singleProtectorText: 'Grab a single premium anti-spy screenprotector at an unbeatable action price!',
-          singleProtectorOriginal: '€14.95',
-          singleProtectorAction: '€9.99',
-          singleProtectorButton: 'Buy Now',
           testimonialsTitle: 'What Our Customers Say',
           testimonials: [
             { name: 'A. K.', quote: 'Super happy! No one can peek at my iPhone screen on the bus anymore. Installation was a breeze.', orderDate: '10-05-2025' },
@@ -277,7 +255,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
           marketingCookies: 'Marketing Cookies',
           marketingDesc: 'These cookies are used for advertising and targeting purposes.',
           saveSettings: 'Save Settings'
-        },       
+        },
         nl: {
           title: 'Bescherm je privacy!',
           subtitle: 'Beveilig je scherm met ongeëvenaarde 180° privacy!',
@@ -290,18 +268,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             'Hoge touchscreen-gevoeligheid: vloeiende bediening.'
           ],
           productUrgency: 'Aanbieding verloopt over:',
-          cartAdded: 'Starters-kit toegevoegd aan winkelwagen!',
           paymentOptions: 'Achteraf betalen mogelijk.',
-          subscriptionTitle: 'Ontgrendel ultiem gemak met ons abonnement!',
-          subscriptionText: 'Sluit je aan bij ons exclusieve abonnement en ontvang elke 6 maanden een gloednieuwe Starters-kit rechtstreeks bij jou thuis. Geniet van een fantastische 10% korting, gratis verzending bij elke levering en zorgeloze privacybescherming. Pauzeer of annuleer op elk moment via onze vriendelijke klantenservice. Perfect om altijd voorop te blijven met topklasse schermbescherming!',
-          subscriptionPrice: 'Alleen €17,99 / 6 maanden',
-          subscriptionButton: 'Start nu & bespaar 10%',
-          subscriptionSelected: 'Abonnement geactiveerd! Je ontvangt elke 6 maanden een nieuwe Starters-kit.',
-          singleProtectorTitle: 'Enkele Screenprotector Deal',
-          singleProtectorText: 'Koop een enkele premium anti-spy screenprotector tegen een onklopbare actieprijs!',
-          singleProtectorOriginal: '€14,95',
-          singleProtectorAction: '€9,99',
-          singleProtectorButton: 'Koop nu',
           testimonialsTitle: 'Wat onze klanten zeggen',
           testimonials: [
             { name: 'A. K.', quote: 'Super tevreden! Niemand kan meer meekijken op mijn iPhone in de bus. De installatie was een eitje.', orderDate: '10-05-2025' },
@@ -329,7 +296,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
           faqReturn: 'Wat is het retourbeleid?',
           faqReturnText: '30 dagen bedenktijd. Neem contact op.',
           contactTitle: 'Neem contact op',
-          contactText: 'Vragen? Stuur een e-mail of WhatsApp . Snelle levering en altijd gratis verzending!',
+          contactText: 'Vragen? Stuur een e-mail of WhatsApp. Snelle levering en altijd gratis verzending!',
           footer: '© 2025 SecuScreen.com. Alle rechten voorbehouden. 30 dagen bedenktijd en gratis verzending op alle bestellingen.',
           cookieSettings: 'Cookie-instellingen',
           necessaryCookies: 'Noodzakelijke cookies',
@@ -354,18 +321,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             'Haute sensibilité tactile : fonctionnement fluide.'
           ],
           productUrgency: 'L’offre expire dans :',
-          cartAdded: 'Kit de démarrage ajouté au panier !',
           paymentOptions: 'Payer après réception possible.',
-          subscriptionTitle: 'Débloquez un confort ultime avec notre abonnement !',
-          subscriptionText: 'Rejoignez notre abonnement exclusif et recevez un nouveau Kit de Démarrage tous les 6 mois, directement chez vous. Profitez d’une réduction de 10 %, d’une livraison gratuite à chaque fois et d’une protection de confidentialité sans tracas. Pause ou annulation possible à tout moment via notre service client amical. Idéal pour rester en tête avec une protection d’écran de premier ordre !',
-          subscriptionPrice: 'Seulement 17,99 € / 6 mois',
-          subscriptionButton: 'Commencez maintenant & économisez 10%',
-          subscriptionSelected: 'Abonnement activé ! Vous recevrez un nouveau Kit de Démarrage tous les 6 mois.',
-          singleProtectorTitle: 'Offre pour un Protecteur d’Écran Unique',
-          singleProtectorText: 'Achetez un protecteur d’écran anti-espion premium à un prix d’action imbattable !',
-          singleProtectorOriginal: '14,95 €',
-          singleProtectorAction: '9,99 €',
-          singleProtectorButton: 'Acheter maintenant',
           testimonialsTitle: 'Ce que disent nos clients',
           testimonials: [
             { name: 'A. K.', quote: 'Super satisfait ! Personne ne peut plus regarder mon iPhone dans le bus. L’installation était un jeu d’enfant.', orderDate: '10-05-2025' },
@@ -418,18 +374,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             'Alta sensibilidad táctil: funcionamiento suave.'
           ],
           productUrgency: 'La oferta expira en:',
-          cartAdded: '¡Kit de inicio añadido al carrito!',
           paymentOptions: 'Pagar después disponible a través.',
-          subscriptionTitle: '¡Desbloquea la máxima comodidad con nuestra suscripción!',
-          subscriptionText: 'Únete a nuestra suscripción exclusiva y recibe un nuevo Kit de Inicio cada 6 meses, entregado directamente en tu puerta. Disfruta de un increíble 10% de descuento, envío gratuito en cada entrega y protección de privacidad sin complicaciones. Pausa o cancela en cualquier momento a través nuestro amable servicio al cliente. ¡Perfecto para mantenerte a la vanguardia con la mejor protección de pantalla!',
-          subscriptionPrice: 'Solo 17,99 € / 6 meses',
-          subscriptionButton: 'Comienza ahora & ahorra 10%',
-          subscriptionSelected: '¡Suscripción activada! Recibirás un nuevo Kit de Inicio cada 6 meses.',
-          singleProtectorTitle: 'Oferta de Protector de Pantalla Individual',
-          singleProtectorText: '¡Consigue un protector de pantalla anti-espías premium a un precio de acción increíble!',
-          singleProtectorOriginal: '14,95 €',
-          singleProtectorAction: '9,99 €',
-          singleProtectorButton: 'Compra ahora',
           testimonialsTitle: 'Lo que dicen nuestros clientes',
           testimonials: [
             { name: 'A. K.', quote: '¡Super contento! Nadie puede mirar mi iPhone en el autobús. La instalación fue muy fácil.', orderDate: '10-05-2025' },
@@ -482,18 +427,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             'Hohe Touchscreen-Empfindlichkeit: Reibungslose Bedienung.'
           ],
           productUrgency: 'Angebot läuft ab in:',
-          cartAdded: 'Starter-Kit zum Warenkorb hinzugefügt!',
           paymentOptions: 'Später bezahlen möglich.',
-          subscriptionTitle: 'Entsperren Sie ultimativen Komfort mit unserem Abonnement!',
-          subscriptionText: 'Schließen Sie sich unserem exklusiven Abonnement an und erhalten Sie alle 6 Monate ein neues Starter-Kit direkt an Ihre Tür geliefert. Genießen Sie einen großartigen 10%-Rabatt, kostenlosen Versand bei jeder Lieferung und sorgenfreien Datenschutz. Pausieren oder kündigen Sie jederzeit unseren freundlichen Kundenservice. Perfekt, um stets mit erstklassigem Bildschutz vorn zu bleiben!',
-          subscriptionPrice: 'Nur 17,99 € / 6 Monate',
-          subscriptionButton: 'Jetzt starten & 10% sparen',
-          subscriptionSelected: 'Abonnement aktiviert! Sie erhalten alle 6 Monate ein neues Starter-Kit.',
-          singleProtectorTitle: 'Angebot für einen Einzelnen Displayschutz',
-          singleProtectorText: 'Kaufen Sie einen premium Anti-Spionage-Displayschutz zu einem unschlagbaren Aktionspreis!',
-          singleProtectorOriginal: '14,95 €',
-          singleProtectorAction: '9,99 €',
-          singleProtectorButton: 'Jetzt kaufen',
           testimonialsTitle: 'Was unsere Kunden sagen',
           testimonials: [
             { name: 'A. K.', quote: 'Super zufrieden! Niemand kann mehr auf mein iPhone im Bus schauen. Die Installation war kinderleicht.', orderDate: '10-05-2025' },
@@ -521,7 +455,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
           faqReturn: 'Wie lautet die Rückgabepolitik?',
           faqReturnText: '30-tägige Rückgabefrist. Kontaktieren Sie uns unter secusreenshop@gmail.com.',
           contactTitle: 'Kontaktieren Sie uns',
-          contactText: 'Fragen? Senden Sie eine E-Mail an oder WhatsApp. Schnelle Lieferung und immer kostenloser Versand!',
+          contactText: 'Fragen? Senden Sie eine E-Mail oder WhatsApp. Schnelle Lieferung und immer kostenloser Versand!',
           footer: '© 2025 SecuScreen.com. Alle Rechte vorbehalten. 30-tägige Rückgabefrist und kostenloser Versand auf alle Bestellungen.',
           cookieSettings: 'Cookie-Einstellungen',
           necessaryCookies: 'Notwendige Cookies',
@@ -543,7 +477,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             <div className="fixed bottom-0 left-0 right-0 bg-gray-800 p-4 z-30 cookie-banner shadow-lg">
               <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
                 <p className="text-sm mb-2 md:mb-0">
-                  {language === 'nl' ? 'Wij gebruiken cookies om je ervaring te verbeteren. Door verder te gaan, ga je akkoord met ons cookiebeleid.' : 
+                  {language === 'nl' ? 'Wij gebruiken cookies om je ervaring te verbeteren. Door verder te gaan, ga je akkoord met ons cookiebeleid.' :
                    language === 'en' ? 'We use cookies to improve your experience. By continuing, you agree to our cookie policy.' :
                    language === 'fr' ? 'Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre politique de cookies.' :
                    language === 'es' ? 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra política de cookies.' :
@@ -567,7 +501,13 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
               <div id="overlay" className="overlay active" onClick={() => setShowCookieSettings(false)}></div>
               <div id="cookieSettings" className="cookie-settings active">
                 <h3 className="text-xl font-bold mb-4">{translations[language].cookieSettings}</h3>
-                <p className="mb-4 text-sm">{language === 'nl' ? 'Kies welke cookies u wilt accepteren.' : language === 'en' ? 'Choose which cookies you want to accept.' : language === 'fr' ? 'Choisissez les cookies que vous souhaitez accepter.' : language === 'es' ? 'Elija qué cookies desea aceptar.' : 'Wählen Sie aus, welche Cookies Sie akzeptieren möchten.'}</p>
+                <p className="mb-4 text-sm">
+                  {language === 'nl' ? 'Kies welke cookies u wilt accepteren.' :
+                   language === 'en' ? 'Choose which cookies you want to accept.' :
+                   language === 'fr' ? 'Choisissez les cookies que vous souhaitez accepter.' :
+                   language === 'es' ? 'Elija qué cookies desea aceptar.' :
+                   'Wählen Sie aus, welche Cookies Sie akzeptieren möchten.'}
+                </p>
                 <div className="space-y-4">
                   <div>
                     <label className="flex items-center justify-between">
@@ -582,6 +522,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                     </label>
                     <p className="text-xs text-gray-400">{translations[language].necessaryDesc}</p>
                   </div>
+
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].analyticsCookies}</span>
@@ -594,6 +535,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                     </label>
                     <p className="text-xs text-gray-400">{translations[language].analyticsDesc}</p>
                   </div>
+
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].functionalCookies}</span>
@@ -606,6 +548,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                     </label>
                     <p className="text-xs text-gray-400">{translations[language].functionalDesc}</p>
                   </div>
+
                   <div>
                     <label className="flex items-center justify-between">
                       <span>{translations[language].marketingCookies}</span>
@@ -619,6 +562,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                     <p className="text-xs text-gray-400">{translations[language].marketingDesc}</p>
                   </div>
                 </div>
+
                 <button
                   onClick={saveCookieSettings}
                   className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition"
@@ -633,12 +577,14 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
           <header className="bg-gray-800 p-4 sticky top-0 z-20 shadow-lg">
             <div className="container mx-auto flex justify-between items-center">
               <h1 className="text-2xl md:text-3xl font-bold text-blue-400">SecuScreen</h1>
+
               <div className="flex items-center space-x-4 md:space-x-6">
                 <button className="hamburger md:hidden text-white focus:outline-none" onClick={toggleMenu}>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                   </svg>
                 </button>
+
                 <nav className="nav-menu desktop md:flex md:space-x-6">
                   <a href="#home" className="hover:text-blue-400 transition">{language === 'nl' ? 'Home' : language === 'en' ? 'Home' : language === 'fr' ? 'Accueil' : language === 'es' ? 'Inicio' : 'Start'}</a>
                   <a href="#product" className="hover:text-blue-400 transition">{language === 'nl' ? 'Product' : language === 'en' ? 'Product' : language === 'fr' ? 'Produit' : language === 'es' ? 'Producto' : 'Produkt'}</a>
@@ -646,6 +592,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                   <a href="#faq" className="hover:text-blue-400 transition">{language === 'nl' ? 'FAQ' : language === 'en' ? 'FAQ' : language === 'fr' ? 'FAQ' : language === 'es' ? 'Preguntas frecuentes' : 'FAQ'}</a>
                   <a href="#contact" className="hover:text-blue-400 transition">{language === 'nl' ? 'Contact' : language === 'en' ? 'Contact' : language === 'fr' ? 'Contact' : language === 'es' ? 'Contacto' : 'Kontakt'}</a>
                 </nav>
+
                 <nav className={`nav-menu mobile ${menuOpen ? 'active' : ''}`}>
                   <a href="#home" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>{language === 'nl' ? 'Home' : language === 'en' ? 'Home' : language === 'fr' ? 'Accueil' : language === 'es' ? 'Inicio' : 'Start'}</a>
                   <a href="#product" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>{language === 'nl' ? 'Product' : language === 'en' ? 'Product' : language === 'fr' ? 'Produit' : language === 'es' ? 'Producto' : 'Produkt'}</a>
@@ -653,6 +600,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                   <a href="#faq" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>{language === 'nl' ? 'FAQ' : language === 'en' ? 'FAQ' : language === 'fr' ? 'FAQ' : language === 'es' ? 'Preguntas frecuentes' : 'FAQ'}</a>
                   <a href="#contact" className="hover:text-blue-400 transition block py-2" onClick={toggleMenu}>{language === 'nl' ? 'Contact' : language === 'en' ? 'Contact' : language === 'fr' ? 'Contact' : language === 'es' ? 'Contacto' : 'Kontakt'}</a>
                 </nav>
+
                 <select
                   value={language}
                   onChange={(e) => changeLanguage(e.target.value)}
@@ -664,9 +612,10 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                   <option value="es">ES</option>
                   <option value="de">DE</option>
                 </select>
-<a href="Checkout.html" className="relative group">
-  🛒 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-sm">{cartCount}</span>
-</a>
+
+                <a href="Checkout.html" className="relative group">
+                  🛒 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-sm">{cartCount}</span>
+                </a>
               </div>
             </div>
           </header>
@@ -676,6 +625,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             <div className="container mx-auto px-4 text-center fade-in">
               <h2 className="text-4xl md:text-6xl font-bold mb-4 text-blue-400">{translations[language].title}</h2>
               <p className="text-lg md:text-2xl mb-6 max-w-2xl mx-auto">{translations[language].subtitle}</p>
+
               <div className="relative w-full max-w-xs md:max-w-lg mx-auto mb-8">
                 <img
                   src="Logo-screen.png"
@@ -683,22 +633,25 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                   className="w-full h-auto rounded-lg shadow-2xl banner-image hover-scale"
                 />
               </div>
+
               <a href="#product" className="inline-block bg-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition hover-scale">
                 {language === 'nl' ? 'Shop nu' : language === 'en' ? 'Shop now' : language === 'fr' ? 'Acheter maintenant' : language === 'es' ? 'Compra ahora' : 'Jetzt kaufen'}
               </a>
             </div>
           </section>
 
-          {/* Product-sectie */}
+          {/* Product-sectie (starterskit) */}
           <section id="product" className="py-16 bg-gray-800 fade-in">
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
                   <img src="starterskit.png" alt="Anti-spy screenprotector starters-kit" className="w-full rounded-lg shadow-2xl hover-scale"/>
                 </div>
+
                 <div className="text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400">{translations[language].productTitle}</h3>
                   <p className="text-lg mb-4">{translations[language].productDescription}</p>
+
                   <ul className="text-lg mb-4 space-y-2">
                     {translations[language].productBenefits.map((benefit, index) => (
                       <li key={index} className="flex items-center">
@@ -709,7 +662,11 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                       </li>
                     ))}
                   </ul>
-                  <p className="text-lg mb-4">{language === 'nl' ? 'Inclusief:' : language === 'en' ? 'Includes:' : language === 'fr' ? 'Inclus :' : language === 'es' ? 'Incluye:' : 'Enthalten:'}</p>
+
+                  <p className="text-lg mb-4">
+                    {language === 'nl' ? 'Inclusief:' : language === 'en' ? 'Includes:' : language === 'fr' ? 'Inclus :' : language === 'es' ? 'Incluye:' : 'Enthalten:'}
+                  </p>
+
                   <ul className="text-lg mb-4 space-y-2">
                     <li className="flex items-center">
                       <svg className="w-5 h-5 text-blue-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -730,12 +687,18 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                       {language === 'nl' ? 'Installatiekit (doekje, applicator)' : language === 'en' ? 'Installation kit (cloth, applicator)' : language === 'fr' ? 'Kit d’installation (chiffon, applicateur)' : language === 'es' ? 'Kit de instalación (paño, aplicador)' : 'Installationskit (Tuch, Applikator)'}
                     </li>
                   </ul>
+
                   <p className="text-xl font-bold mb-2">
                     <span className="line-through text-gray-400">€39,99</span>
                     <span className="text-yellow-400 ml-2">€19,99</span>
                   </p>
-                  <p className="text-xl font-bold text-red-500 mb-4">{translations[language].productUrgency} {formatTime(timeLeft)}</p>
+
+                  <p className="text-xl font-bold text-red-500 mb-4">
+                    {translations[language].productUrgency} {formatTime(timeLeft)}
+                  </p>
+
                   <p className="text-sm text-gray-300 mb-4">{translations[language].paymentOptions}</p>
+
                   <button onClick={addToCart} className="bg-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition pulse">
                     {language === 'nl' ? 'Toevoegen aan winkelwagen' : language === 'en' ? 'Add to cart' : language === 'fr' ? 'Ajouter au panier' : language === 'es' ? 'Añadir al carrito' : 'Zum Warenkorb hinzufügen'}
                   </button>
@@ -759,7 +722,9 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                     </div>
                     <p className="text-sm mb-4">"{testimonial.quote}"</p>
                     <p className="text-sm font-semibold text-blue-400">{testimonial.name}</p>
-                    <p className="text-xs text-gray-400">{language === 'nl' ? 'Besteld op' : language === 'en' ? 'Ordered on' : language === 'fr' ? 'Commandé le' : language === 'es' ? 'Ordenado el' : 'Bestellt am'} {testimonial.orderDate}</p>
+                    <p className="text-xs text-gray-400">
+                      {language === 'nl' ? 'Besteld op' : language === 'en' ? 'Ordered on' : language === 'fr' ? 'Commandé le' : language === 'es' ? 'Ordenado el' : 'Bestellt am'} {testimonial.orderDate}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -771,6 +736,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].newsletterTitle}</h2>
               <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].newsletterSubtitle}</p>
+
               <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
                 <input
                   type="email"
@@ -778,7 +744,7 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
                   className="w-full md:w-64 p-3 rounded-full bg-gray-700 text-white border-none focus:outline-none"
                 />
                 <a
-                  href="https://forms.gle/example" // Vervang door je Google Forms/Mailchimp-link
+                  href="https://forms.gle/example"
                   target="_blank"
                   className="bg-yellow-400 text-gray-900 px-6 py-3 rounded-full font-semibold text-lg hover:bg-yellow-500 transition hover-scale"
                 >
@@ -787,90 +753,30 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
               </div>
             </div>
           </section>
-<section id="product" className="py-16 bg-gray-800 fade-in">
-  <div className="container mx-auto px-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-      {/* Product 1: Starter Kit */}
-      <div className="bg-gray-700 p-6 rounded-lg shadow-lg hover-scale text-center min-h-[300px] flex flex-col justify-between">
-        <div>
-          <img src="starterskit.png" alt="Anti-spy screenprotector starters-kit" className="w-32 h-32 mx-auto mb-4 rounded-lg object-cover" />
-          <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].productTitle}</h3>
-          <p className="text-md mb-2">
-            <span className="line-through text-gray-400">€39,99</span>
-            <span className="text-yellow-400 ml-2">€19,99</span>
-          </p>
-          <p className="text-md text-red-500 mb-4">{translations[language].productUrgency} {formatTime(timeLeft)}</p>
-        </div>
-        <button onClick={addToCart} className="bg-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-600 transition pulse w-full">
-          {language === 'nl' ? 'Toevoegen aan winkelwagen' : language === 'en' ? 'Add to cart' : language === 'fr' ? 'Ajouter au panier' : language === 'es' ? 'Añadir al carrito' : 'Zum Warenkorb hinzufügen'}
-        </button>
-      </div>
 
-      {/* Product 2: Single Protector Deal */}
-      <div className="bg-gray-700 p-6 rounded-lg shadow-lg hover-scale text-center min-h-[300px] flex flex-col justify-between">
-        <div>
-          <img src="singledeal1.png" alt="Single anti-spy screenprotector" className="w-32 h-32 mx-auto mb-4 rounded-lg object-cover" />
-          <h3 className="text-xl font-semibold mb-2 text-yellow-400">{translations[language].singleProtectorTitle}</h3>
-          <p className="text-md mb-2">
-            <span className="line-through text-gray-400">€14,95</span>
-            <span className="text-yellow-400 ml-2">€9,99</span>
-          </p>
-        </div>
-        <button onClick={addToCart} className="bg-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-600 transition pulse w-full">
-          {language === 'nl' ? 'Toevoegen aan winkelwagen' : language === 'en' ? 'Add to cart' : language === 'fr' ? 'Ajouter au panier' : language === 'es' ? 'Añadir al carrito' : 'Zum Warenkorb hinzufügen'}
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-          {/* Abonnementssectie */}
-          <section id="subscription" className="py-16 bg-gray-900 fade-in">
+          {/* Comparison */}
+          <section id="comparison" className="py-16 bg-gray-800 fade-in">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].subscriptionTitle}</h2>
-              <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].subscriptionText}</p>
-              <p className="text-xl font-bold text-yellow-400 mb-4">{translations[language].subscriptionPrice}</p>
-              <p className="text-sm text-gray-300 mb-4">{translations[language].paymentOptions}</p>
-              <a
-                href="https://stripe.com/subscription" // Vervang door je Stripe-link
-                target="_blank"
-                onClick={subscribe}
-                className="inline-block bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold text-lg hover:bg-yellow-500 transition hover-scale pulse"
-              >
-                {translations[language].subscriptionButton}
-              </a>
+              <div className="overflow-x-auto">
+                <table className="w-full md:w-auto mx-auto bg-gray-700 rounded-lg shadow-lg">
+                  <thead>
+                    <tr className="bg-gray-800">
+                      <th className="p-4 text-left text-yellow-400">Feature</th>
+                      <th className="p-4 text-center text-yellow-400">SecuScreen</th>
+                      <th className="p-4 text-center text-yellow-400">Competitors</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">180° Privacy Protection</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+                    <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">Blue Light Reduction</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+                    <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">Scratch-Resistant Glass</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+                    <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">High Touchscreen Sensitivity</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
 
-          {/* Single Protector Deal Sectie */}
-          <section className="py-16 bg-gray-800 fade-in">
-            <div className="container mx-auto px-4 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-400">{translations[language].singleProtectorTitle}</h2>
-              <p className="text-lg mb-6 max-w-2xl mx-auto">{translations[language].singleProtectorText}</p>
-              <p className="text-xl font-bold mb-2">
-                <span className="line-through text-gray-400">{translations[language].singleProtectorOriginal}</span>
-                <span className="text-yellow-400 ml-2">{translations[language].singleProtectorAction}</span>
-              </p>
-              <p className="text-sm text-gray-300 mb-4">{translations[language].paymentOptions}</p>
-              <button onClick={addToCart} className="bg-red-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-red-600 transition pulse">
-                {translations[language].singleProtectorButton}
-              </button>
-            </div>
-          </section>
-<section id="comparison" className="py-16 bg-gray-800 fade-in">
-  <div className="container mx-auto px-4 text-center">
-    <div className="overflow-x-auto">
-      <table className="w-full md:w-auto mx-auto bg-gray-700 rounded-lg shadow-lg">
-        <thead><tr className="bg-gray-800"><th className="p-4 text-left text-yellow-400">Feature</th><th className="p-4 text-center text-yellow-400">SecuScreen</th><th className="p-4 text-center text-yellow-400">Competitors</th></tr></thead>
-        <tbody>
-          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">180° Privacy Protection</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
-          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">Blue Light Reduction</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
-          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">Scratch-Resistant Glass</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
-          <tr className="border-t border-gray-600"><td className="p-4 text-left text-blue-400">High Touchscreen Sensitivity</td><td className="p-4 text-center text-green-400">✓</td><td className="p-4 text-center text-red-400">✗</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
           {/* USP-sectie */}
           <section className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4">
@@ -919,12 +825,12 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
           <section id="contact" className="py-16 bg-gray-900 fade-in">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-blue-400">{translations[language].contactTitle}</h2>
-            			<p className="text-lg mb-4" dangerouslySetInnerHTML={{ __html: translations[language].contactText }}></p>
-            <div className="flex justify-center space-x-4">
-      <a href="mailto:secuscreenshop@gmail.com" className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition hover-scale">E-mail</a>
-      <a href="https://wa.me/+31683237532" target="_blank" className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition hover-scale">WhatsApp</a>
-    </div>
-			</div>
+              <p className="text-lg mb-4" dangerouslySetInnerHTML={{ __html: translations[language].contactText }}></p>
+              <div className="flex justify-center space-x-4">
+                <a href="mailto:secuscreenshop@gmail.com" className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition hover-scale">E-mail</a>
+                <a href="https://wa.me/+31683237532" target="_blank" className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition hover-scale">WhatsApp</a>
+              </div>
+            </div>
           </section>
 
           {/* Footer */}
@@ -932,8 +838,12 @@ localStorage.setItem('cartItems', JSON.stringify([selectedProduct]));;
             <div className="container mx-auto px-4 text-center">
               <p className="text-sm">{translations[language].footer}</p>
               <p className="mt-2 space-x-4">
-                <a href="privacypolicy.html" className="hover:text-blue-400 transition">{language === 'nl' ? 'Privacybeleid' : language === 'en' ? 'Privacy Policy' : language === 'fr' ? 'Politique de confidentialité' : language === 'es' ? 'Política de privacidad' : 'Datenschutzrichtlinie'}</a>
-                <a href="Terms.html" className="hover:text-blue-400 transition">{language === 'nl' ? 'Algemene voorwaarden' : language === 'en' ? 'Terms & Conditions' : language === 'fr' ? 'Conditions générales' : language === 'es' ? 'Términos y condiciones' : 'Allgemeine Geschäftsbedingungen'}</a>
+                <a href="privacypolicy.html" className="hover:text-blue-400 transition">
+                  {language === 'nl' ? 'Privacybeleid' : language === 'en' ? 'Privacy Policy' : language === 'fr' ? 'Politique de confidentialité' : language === 'es' ? 'Política de privacidad' : 'Datenschutzrichtlinie'}
+                </a>
+                <a href="Terms.html" className="hover:text-blue-400 transition">
+                  {language === 'nl' ? 'Algemene voorwaarden' : language === 'en' ? 'Terms & Conditions' : language === 'fr' ? 'Conditions générales' : language === 'es' ? 'Términos y condiciones' : 'Allgemeine Geschäftsbedingungen'}
+                </a>
                 <a href="https://youtube.com/SecuScreen" className="hover:text-blue-400 transition">YouTube</a>
               </p>
             </div>
